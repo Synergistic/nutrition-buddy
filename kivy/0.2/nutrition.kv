@@ -1,0 +1,71 @@
+<Widgets>
+  orientation: 'vertical'
+  
+  user_height: entered_height
+  height_unit: height_spinbox
+  
+  weight_unit: weight_spinbox  
+  user_weight: entered_weight
+  
+  user_age: entered_age
+  user_sex: sex_spinbox
+  
+  BoxLayout:
+    orientation: 'horizontal'
+    
+    Label:
+      text: 'Height'
+    
+    TextInput:
+      id: entered_height
+    
+    Spinner:
+      id: height_spinbox
+      text: 'unit'
+      values: ( 'unit', 'cm', 'in' )
+  
+  BoxLayout:
+    orientation: 'horizontal'
+  
+    Label:
+      text: 'Weight'
+      
+    TextInput:
+      id: entered_weight
+      
+      
+    Spinner:
+      id: weight_spinbox
+      text: 'unit'
+      values: ( 'unit', 'kg', 'lbs' )
+      
+  BoxLayout:
+    orientation: 'horizontal'
+    
+    Label:
+      text: 'Age'
+    
+    TextInput:
+      id: entered_age
+  
+  BoxLayout:
+    orientation: 'horizontal'
+    
+    Label:
+      text: 'Sex'
+    
+    Spinner:
+      id: sex_spinbox
+      text: 'Select Sex'
+      values: ( 'Select Sex', 'Male', 'Female' ) 
+  
+  BoxLayout:
+    orientation: 'horizontal'
+    
+    Button:
+      text: 'Calculate'
+      on_release: root.output_data()
+      
+    Button:
+      text: 'Reset'
+      on_release: root.reset_data()
