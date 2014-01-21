@@ -1,7 +1,7 @@
 from decimal import *
 
 
-def bodymassindex(weight_kg, height_cm):
+def body_mass_index(weight_kg, height_cm):
     """
     Calculates Body Mass Index(BMI):
     bmi = (weight(kg) / (height(meters)**2))
@@ -24,7 +24,7 @@ def bodymassindex(weight_kg, height_cm):
         
     return Decimal(str(bmi)), category
 
-def idealbodyweight(weight_lbs, height_in, gender):
+def ideal_body_weight(weight_lbs, height_in, gender):
     """
     Calculates IBW based on Hamwi method;
     Males: 106 + 6x
@@ -49,7 +49,7 @@ def idealbodyweight(weight_lbs, height_in, gender):
     ibw_kg = ibw / Decimal('2.2')
     return ibw, ibw_kg, percent_ibw
 
-def adjustbodyweight(ibw_kg, weight_kg):
+def adjust_body_weight(ibw_kg, weight_kg):
     return (((weight_kg - ibw_kg) * Decimal('0.25')) + ibw_kg)
     
 def mifflin(weight_kg, height_cm, gender, age):
