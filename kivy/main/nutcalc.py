@@ -33,22 +33,23 @@ def ideal_body_weight(weight_lbs, height_in, gender):
     """
     if height_in >= 60:
         inches_over_sixty = height_in - 60
-        if gender == 'male':
+        if gender.lower() == 'male':
             ibw = (inches_over_sixty * 6) + 106
-        elif gender == 'female':
+        elif gender.lower() == 'female':
             ibw = (inches_over_sixty * 5) + 100
             
     elif height_in < 60:
         ibw_in = 60 - height_in
-        if gender == 'male':
+        if gender.lower() == 'male':
             ibw = 106 - (ibw_in * 3)
-        elif gender == 'female':
+        elif gender.lower() == 'female':
             ibw = 100 - (ibw_in * (Decimal('2.5')))
-            
-    percent_ibw = (weight_lbs / ibw) * Decimal('100.0')
     ibw_kg = ibw / Decimal('2.2')
-    return ibw, ibw_kg, percent_ibw
+    return ibw, ibw_kg
 
+def percent_ideal_body_weight(weight_kg, ibw_kg):  
+    return ( weight_kg / ibw_kg ) * Decimal('100.0')
+    
 def adjust_body_weight(ibw_kg, weight_kg):
     return (((weight_kg - ibw_kg) * Decimal('0.25')) + ibw_kg)
     
