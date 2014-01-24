@@ -1,71 +1,100 @@
 <Widgets>
-  orientation: 'vertical'
+    orientation: 'vertical'
   
-  user_height: entered_height
-  height_unit: height_spinbox
+    user_height: entered_height
+    height_unit: height_spinbox
+    user_weight: entered_weight
+    weight_unit: weight_spinbox  
+    user_age: entered_age
+    user_sex: sex_spinbox
+	
+	BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, 0.3)
+		
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, 0.1)
+		
+        Label:
+            text: 'Height'
+			font_size: 24
+			
+        TextInput:
+            id: entered_height
+            multiline: False
+			pos_hint: {'center_y': 0.5}
+			font_size: 24
+			
+        Spinner:
+            id: height_spinbox
+	        text: 'cm'
+            values: ( 'cm', 'in' )
+            pos_hint: {'center_y': 0.5}
+            font_size: 24
+			
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, 0.1)
+		
+        Label:
+            text: 'Weight'
+			font_size: 24
+        TextInput:
+            id: entered_weight
+            multiline: False
+            pos_hint: {'center_y': 0.5}
+			font_size: 24
+        Spinner:
+            id: weight_spinbox
+	        text: 'kg'
+            values: ( 'kg', 'lbs' )
+            pos_hint: {'center_y': 0.5}   
+			font_size: 24			
+			
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, 0.1)
+
+        Label:
+            text: 'Age'
+			font_size: 24
+        TextInput:
+            id: entered_age
+            multiline: False
+            pos_hint: {'center_y': 0.5}
+			font_size: 24
+		Label:
   
-  weight_unit: weight_spinbox  
-  user_weight: entered_weight
-  
-  user_age: entered_age
-  user_sex: sex_spinbox
-  
-  BoxLayout:
-    orientation: 'horizontal'
-    
-    Label:
-      text: 'Height'
-    
-    TextInput:
-      id: entered_height
-    
-    Spinner:
-      id: height_spinbox
-	  text: 'cm'
-      values: ( 'cm', 'in' )
-  
-  BoxLayout:
-    orientation: 'horizontal'
-  
-    Label:
-      text: 'Weight'
-      
-    TextInput:
-      id: entered_weight
-      
-      
-    Spinner:
-      id: weight_spinbox
-	  text: 'kg'
-      values: ( 'kg', 'lbs' )
-      
-  BoxLayout:
-    orientation: 'horizontal'
-    
-    Label:
-      text: 'Age'
-    
-    TextInput:
-      id: entered_age
-  
-  BoxLayout:
-    orientation: 'horizontal'
-    
-    Label:
-      text: 'Sex'
-    
-    Spinner:
-      id: sex_spinbox
-      text: 'Male'
-	  values: ( 'Male', 'Female' ) 
-  
-  BoxLayout:
-    orientation: 'horizontal'
-    
-    Button:
-      text: 'Calculate'
-      on_release: root.output_popup()
-      
-    Button:
-      text: 'Reset'
-      on_release: root.reset_fields()
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, 0.1)
+		
+        Label:
+            text: 'Sex'
+			font_size: 24
+        Spinner:
+            id: sex_spinbox
+            text: 'Male'
+	        values: ( 'Male', 'Female' ) 
+            pos_hint: {'center_y': 0.5}
+			font_size: 24
+		Label:
+    BoxLayout:
+	    size_hint: (1, 0.1)
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, 0.2)
+		
+        Button:
+            text: 'Calculate'
+			font_size: 24
+            on_release: root.output_popup()
+        Button:
+            text: 'Reset'
+			font_size: 24
+            on_release: root.reset_fields()
+			
+	BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, 0.2)
