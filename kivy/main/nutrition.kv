@@ -1,13 +1,7 @@
 <Widgets>
     orientation: 'vertical'
   
-    user_height: entered_height
-    height_unit: height_spinbox
-    user_weight: entered_weight
-    weight_unit: weight_spinbox  
-    user_age: entered_age
-    user_sex: sex_spinbox
-	
+
 	BoxLayout:
         orientation: 'horizontal'
         size_hint: (1, 0.3)
@@ -19,19 +13,16 @@
         Label:
             text: 'Height'
 			font_size: 24
-			
         TextInput:
-            id: entered_height
+            text: root.user_height
             multiline: False
-			pos_hint: {'center_y': 0.5}
 			font_size: 24
-			
+			on_text: root.user_height = self.text
         Spinner:
-            id: height_spinbox
-	        text: 'cm'
-            values: ( 'cm', 'in' )
-            pos_hint: {'center_y': 0.5}
-            font_size: 24
+            text: root.height_unit
+			on_text: root.height_unit = self.text
+            values: ( 'cm', 'in' ) 
+			font_size: 24		
 			
     BoxLayout:
         orientation: 'horizontal'
@@ -41,15 +32,14 @@
             text: 'Weight'
 			font_size: 24
         TextInput:
-            id: entered_weight
+            text: root.user_weight
             multiline: False
-            pos_hint: {'center_y': 0.5}
 			font_size: 24
+			on_text: root.user_weight = self.text
         Spinner:
-            id: weight_spinbox
-	        text: 'kg'
-            values: ( 'kg', 'lbs' )
-            pos_hint: {'center_y': 0.5}   
+            text: root.weight_unit
+			on_text: root.weight_unit = self.text
+            values: ( 'kg', 'lbs' ) 
 			font_size: 24			
 			
     BoxLayout:
@@ -60,10 +50,10 @@
             text: 'Age'
 			font_size: 24
         TextInput:
-            id: entered_age
+            text: root.user_age
             multiline: False
-            pos_hint: {'center_y': 0.5}
 			font_size: 24
+			on_text: root.user_age = self.text
 		Label:
   
     BoxLayout:
@@ -74,14 +64,15 @@
             text: 'Sex'
 			font_size: 24
         Spinner:
-            id: sex_spinbox
-            text: 'Male'
-	        values: ( 'Male', 'Female' ) 
-            pos_hint: {'center_y': 0.5}
+            text: root.user_sex
+	        values: ( 'Male', 'Female' )
+			on_text: root.user_sex = self.text
 			font_size: 24
 		Label:
+		
     BoxLayout:
 	    size_hint: (1, 0.1)
+		
     BoxLayout:
         orientation: 'horizontal'
         size_hint: (1, 0.2)
@@ -89,7 +80,7 @@
         Button:
             text: 'Calculate'
 			font_size: 24
-            on_release: root.output_popup()
+            on_release: root.run_calculator()
         Button:
             text: 'Reset'
 			font_size: 24
