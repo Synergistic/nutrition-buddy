@@ -2,27 +2,27 @@
     orientation: 'vertical'
   
 
-	BoxLayout:
-        orientation: 'horizontal'
-        size_hint: (1, 0.3)
-		
+
+	Image:
+		source: 'logo.png'
+		size_hint: (1, 0.3)
     BoxLayout:
         orientation: 'horizontal'
         size_hint: (1, 0.1)
 		
         Label:
             text: 'Height'
-			font_size: 24
+			font_size: '24sp'
         TextInput:
             text: root.user_height
             multiline: False
-			font_size: 24
+			font_size: '24sp'
 			on_text: root.user_height = self.text
         Spinner:
             text: root.height_unit
 			on_text: root.height_unit = self.text
             values: ( 'cm', 'in' ) 
-			font_size: 24		
+			font_size: '24sp'		
 			
     BoxLayout:
         orientation: 'horizontal'
@@ -30,17 +30,17 @@
 		
         Label:
             text: 'Weight'
-			font_size: 24
+			font_size: '24sp'
         TextInput:
             text: root.user_weight
             multiline: False
-			font_size: 24
+			font_size: '24sp'
 			on_text: root.user_weight = self.text
         Spinner:
             text: root.weight_unit
 			on_text: root.weight_unit = self.text
             values: ( 'kg', 'lbs' ) 
-			font_size: 24			
+			font_size: '24sp'		
 			
     BoxLayout:
         orientation: 'horizontal'
@@ -48,11 +48,11 @@
 
         Label:
             text: 'Age'
-			font_size: 24
+			font_size: '24sp'
         TextInput:
             text: root.user_age
             multiline: False
-			font_size: 24
+			font_size: '24sp'
 			on_text: root.user_age = self.text
 		Label:
   
@@ -62,12 +62,12 @@
 		
         Label:
             text: 'Sex'
-			font_size: 24
+			font_size: '24sp'
         Spinner:
             text: root.user_sex
 	        values: ( 'Male', 'Female' )
 			on_text: root.user_sex = self.text
-			font_size: 24
+			font_size: '24sp'
 		Label:
 		
     BoxLayout:
@@ -79,13 +79,13 @@
 		
         Button:
             text: 'Calculate'
-			font_size: 24
+			font_size: '24sp'
             on_release: root.run_calculator()
         Button:
             text: 'Reset'
-			font_size: 24
+			font_size: '24sp'
             on_release: root.reset_fields()
 			
 	BoxLayout:
         orientation: 'horizontal'
-        size_hint: (1, 0.2)
+        size_hint: (1, 0.1)
