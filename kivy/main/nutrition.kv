@@ -1,95 +1,137 @@
+<NutritionCalc>:
+	orientation: 'vertical'
+	BoxLayout:
+		orientation: 'vertical'
 
-<Widgets>
-    orientation: 'vertical'
-  
-
-
-	Image:
-		source: 'logo.png'
-		size_hint: (1, 0.3)
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: (1, 0.1)
-		
-        Label:
-            text: 'Height'
-			font_size: '24sp'
-        TextInput:
-            input_type: 'number'
-            text: root.user_height
-            multiline: False
-			font_size: '24sp'
-			on_text: root.user_height = self.text
-        Spinner:
-            text: root.height_unit
-			on_text: root.height_unit = self.text
-            values: ( 'cm', 'in' ) 
-			font_size: '24sp'		
-			
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: (1, 0.1)
-		
-        Label:
-            text: 'Weight'
-			font_size: '24sp'
-        TextInput:
-            text: root.user_weight
-            multiline: False
-			font_size: '24sp'
-            input_type: 'number'
-			on_text: root.user_weight = self.text
-        Spinner:
-            text: root.weight_unit
-			on_text: root.weight_unit = self.text
-            values: ( 'kg', 'lbs' ) 
-			font_size: '24sp'		
-			
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: (1, 0.1)
-
-        Label:
-            text: 'Age'
-			font_size: '24sp'
-        TextInput:
-            text: root.user_age
-            input_type: 'number'
-            multiline: False
-			font_size: '24sp'
-			on_text: root.user_age = self.text
+		Image:
+			source: 'logo.png'
+			size_hint: (1, 0.1)
 		Label:
-  
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: (1, 0.1)
-		
-        Label:
-            text: 'Sex'
-			font_size: '24sp'
-        Spinner:
-            text: root.user_sex
-	        values: ( 'Male', 'Female' )
-			on_text: root.user_sex = self.text
-			font_size: '24sp'
+			text: root.title_text
+			font_size: '28sp'
+			size_hint: (1, 0.1)
+			padding: (0, 0)
+			border: 0
+		BoxLayout:
+			orientation: 'horizontal'
+			size_hint: (1, 0.1)
+			
+			Label:
+				text: 'Height'
+				font_size: '20sp'
+			TextInput:
+				input_type: 'number'
+				text: root.user_height
+				multiline: False
+				font_size: '20sp'
+				on_text: root.user_height = self.text
+			Spinner:
+				text: root.height_unit
+				on_text: root.height_unit = self.text
+				values: ( 'cm', 'in' ) 
+				font_size: '20sp'		
+				
+		BoxLayout:
+			orientation: 'horizontal'
+			size_hint: (1, 0.1)
+			
+			Label:
+				text: 'Weight'
+				font_size: '20sp'
+			TextInput:
+				text: root.user_weight
+				multiline: False
+				font_size: '20sp'
+				input_type: 'number'
+				on_text: root.user_weight = self.text
+			Spinner:
+				text: root.weight_unit
+				on_text: root.weight_unit = self.text
+				values: ( 'kg', 'lbs' ) 
+				font_size: '20sp'		
+				
+		BoxLayout:
+			orientation: 'horizontal'
+			size_hint: (1, 0.1)
+
+			Label:
+				text: 'Age'
+				font_size: '20sp'
+			TextInput:
+				text: root.user_age
+				input_type: 'number'
+				multiline: False
+				font_size: '20sp'
+				on_text: root.user_age = self.text
+			Label:
+	  
+		BoxLayout:
+			orientation: 'horizontal'
+			size_hint: (1, 0.1)
+			
+			Label:
+				text: 'Sex'
+				font_size: '20sp'
+			Spinner:
+				text: root.user_sex
+				values: ( 'Male', 'Female' )
+				on_text: root.user_sex = self.text
+				font_size: '20sp'
+			Label:
+
+<MifflinCalc>:
+	BoxLayout:
+		orientation: 'horizontal'
+		size_hint: (1, 0.1)
 		Label:
-		
-    BoxLayout:
-	    size_hint: (1, 0.1)
-		
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: (1, 0.2)
-		
-        Button:
-            text: 'Calculate'
-			font_size: '24sp'
-            on_release: root.run_calculator()
-        Button:
-            text: 'Reset'
-			font_size: '24sp'
-            on_release: root.reset_fields()
+			text: 'Factor'
+			font_size: '20sp'
+		TextInput:
+			input_type: 'number'
+			text: root.stress_factor
+			multiline: False
+			font_size: '20sp'
+			on_text: root.stress_factor = self.text
+		Label:
 			
 	BoxLayout:
-        orientation: 'horizontal'
-        size_hint: (1, 0.1)
+		orientation: 'horizontal'
+		size_hint: (1, 0.2)
+			
+		Button:
+			text: 'Calculate'
+			font_size: '28sp'
+			on_release: root.run_calculator()
+		Button:
+			text: 'Reset'
+			font_size: '28sp'
+			on_release: root.reset_fields()
+				
+<PennCalc>:
+	BoxLayout:
+		orientation: 'horizontal'
+		size_hint: (1, 0.2)
+			
+		Button:
+			text: 'Calculate'
+			font_size: '28sp'
+			on_release: root.run_calculator()
+		Button:
+			text: 'Reset'
+			font_size: '28sp'
+			on_release: root.reset_fields()
+            
+            
+<Widgets>:
+    tab_pos: 'bottom_mid'
+    do_default_tab: False
+	size: self.size
+    TabbedPanelItem:
+        id: Mifflin
+        text: 'Mifflin'
+		MifflinCalc:
+
+	TabbedPanelItem:
+        id: pennst
+        text: 'PennSt'
+		PennCalc:

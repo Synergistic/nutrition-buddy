@@ -7,6 +7,7 @@ from kivy.config import Config
 from kivy.properties import ObjectProperty
 
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
@@ -16,13 +17,14 @@ d = {} #This is where we'll store everything
 Config.set( 'graphics', 'width', '360' )
 Config.set( 'graphics', 'height', '640' )
 
-class Widgets( BoxLayout ):
+class NutritionCalc(BoxLayout):
     '''Parent widget that holds all labels, text inputs, buttons, etc.'''
-  
+    
+    title_text = "Nutrition Calculator"
     #values from the height, weight, age text inputs
-    user_height = ObjectProperty('')
-    user_weight = ObjectProperty('')
-    user_age    = ObjectProperty('')
+    user_height   = ObjectProperty('')
+    user_weight   = ObjectProperty('')
+    user_age      = ObjectProperty('')
   
     #value from the height, weight, sex spinners
     height_unit = ObjectProperty('cm')
@@ -36,9 +38,13 @@ class Widgets( BoxLayout ):
 		finally building the pop up to display output'''
         try:
             self.clear_data()
+            print 'Data cleared'
             self.collect_input()
+            print 'Inputs collected'
             self.calculations()
+            print 'Calculations done'
             self.output_popup()
+            print 'Popup built'
 			
         except:
             print "Error, something not filled out proper"
@@ -79,8 +85,9 @@ class Widgets( BoxLayout ):
             d['abw'] = adjust_body_weight( d['ibw_kg'], d['kg'] )
 
         #determine energy needs using Mifflin-St.Jeor
-        d['calories'] = mifflin(d['kg'], d['cm'], d['sex'], d['age'])
-
+        self.energy_needs()
+        
+		
     def conversions(self):
 	
         if d['kg']: #convert to pounds
@@ -149,20 +156,35 @@ ABW: {6:.2f}kg'''.format( d['bmi'][0],
             )
     
         #Box layout to organize all input and output d
-        d_layout = BoxLayout( orientation = 'vertical' )
+        d_layout = BoxLayout(orientation = 'vertical')
         d_layout.add_widget(inputbox)
         d_layout.add_widget(output_base_d)
 
         return d_layout
 		
-    def reset_fields( self ):
+    def reset_fields(self):
         '''Method attached to the reset button to re-initialize all fields'''   
-        self.user_height = ''
-        self.user_weight = ''
-        self.user_age    = ''
-        self.height_unit = 'cm'
-        self.weight_unit = 'kg'
-        self.user_sex    = 'Male'
+        self.user_height   = ''
+        self.user_weight   = ''
+        self.user_age      = ''
+        self.height_unit   = 'cm'
+        self.weight_unit   = 'kg'
+        self.user_sex      = 'Male'
+        self.stress_factor = '1'
+
+class MifflinCalc(NutritionCalc):
+    stress_factor = ObjectProperty('1')
+    title_text = 'Mifflin St. Jeor Equation'
+
+    def energy_needs(self):
+        d['calories'] = \
+        mifflin(d['kg'], d['cm'], d['sex'], d['age']) * Decimal(self.stress_factor)
+	
+class PennCalc(NutritionCalc):
+    title_text = 'Penn State Equation'
+	
+class Widgets(TabbedPanel):
+	pass
         
 class NutritionApp(App):
     title = "Nutrition Buddy"
