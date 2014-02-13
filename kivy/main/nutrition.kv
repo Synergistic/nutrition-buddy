@@ -1,3 +1,4 @@
+
 <Widgets>
     orientation: 'vertical'
   
@@ -14,6 +15,7 @@
             text: 'Height'
 			font_size: '24sp'
         TextInput:
+            input_type: 'number'
             text: root.user_height
             multiline: False
 			font_size: '24sp'
@@ -35,6 +37,7 @@
             text: root.user_weight
             multiline: False
 			font_size: '24sp'
+            input_type: 'number'
 			on_text: root.user_weight = self.text
         Spinner:
             text: root.weight_unit
@@ -51,6 +54,7 @@
 			font_size: '24sp'
         TextInput:
             text: root.user_age
+            input_type: 'number'
             multiline: False
 			font_size: '24sp'
 			on_text: root.user_age = self.text

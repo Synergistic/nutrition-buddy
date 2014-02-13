@@ -1,3 +1,4 @@
+
 from kivy.app import App
 from nutcalc import *
 from decimal import Decimal
@@ -162,14 +163,17 @@ ABW: {6:.2f}kg'''.format( d['bmi'][0],
         self.height_unit = 'cm'
         self.weight_unit = 'kg'
         self.user_sex    = 'Male'
-
-
         
-class NutritionApp( App ):
-  def build( self ):
-    return Widgets()
+class NutritionApp(App):
+    title = "Nutrition Buddy"
+	
+    def build(self):
+        return Widgets()
 		
-buddy = NutritionApp()
-NutritionApp().run()
+    def on_pause(self):
+        return True
+		
+if __name__ in ('__main__', '__android__'):
+    NutritionApp().run()
 
 	
