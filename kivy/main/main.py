@@ -3,7 +3,6 @@ from kivy.app import App
 from nutcalc import *
 from decimal import Decimal
 
-from kivy.config import Config
 from kivy.properties import ObjectProperty
 
 from kivy.uix.boxlayout import BoxLayout
@@ -13,9 +12,6 @@ from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 
 d = {} #This is where we'll store everything
-
-Config.set( 'graphics', 'width', '360' )
-Config.set( 'graphics', 'height', '640' )
 
 class NutritionCalc(BoxLayout):
     '''Parent widget that holds all labels, text inputs, buttons, etc.'''
