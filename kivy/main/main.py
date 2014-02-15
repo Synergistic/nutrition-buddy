@@ -48,9 +48,8 @@ class NutritionCalc(BoxLayout):
 		
     def clear_data(self):
         '''Method to (re)initialize the d dic'''
-        global d
-        d = {'kg': None, 'lbs': None, 'cm': None, 'in': None, 'bmi': None, 
-        'ibw': None, 'abw': None, 'sex': None, 'calories': None } 
+	for key in d:
+	    d[key] = None
  
     def collect_input(self):
         '''Method to collect & organize the user entered d'''
@@ -76,10 +75,11 @@ class NutritionCalc(BoxLayout):
         d['ibw_lbs'], d['ibw_kg'] = ideal_body_weight(d['lbs'], d['in'], d['sex'])
         d['%ibw'] = percent_ideal_body_weight(d['kg'], d['ibw_kg'])
 		
-		#if currently more than 125% IBW, we need an adjusted body weight
+	#if currently more than 125% IBW, we need an adjusted body weight
         if d['%ibw'] >= 125.0:
             d['abw'] = adjust_body_weight( d['ibw_kg'], d['kg'] )
-
+	else:
+	  d['abw'] = None
         #determine energy needs using Mifflin-St.Jeor
         self.energy_needs()
         
@@ -125,12 +125,12 @@ class NutritionCalc(BoxLayout):
         input_d = Label( 
         text = '   Metric:\n\nHeight: {0:.2f}cm\nWeight: {1:.2f}kg'.format( 
         d['cm'], d['kg'] ))
-
+	
         #display user input as imperial units
         input_d_converted = Label(
         text = '  Imperial:\n\nHeight: {0:.2f}in\nWeight: {1:.2f}lbs'.format( 
         d['in'], d['lbs'] ) )
-
+	
         #store the user input d labels in a box layout
         inputbox = BoxLayout(orientation = 'horizontal')
         inputbox.add_widget(input_d)
@@ -142,6 +142,7 @@ BMI: {0:.2f} - {1}\nIBW: {2:.2f}kg ({3:.2f}%)'''.format( d['bmi'][0],
         d['bmi'][1], d['ibw_kg'], d['%ibw'], d['calories'], 
         (d['calories']/d['kg'])
         ))
+	
         #if adjusted body weight applicable (>= 125% IBW ) add it in to the output
         if d['abw']:
             output_base_d.text = '''Calories: {4:.1f} ({5:.0f}kcal/kg)
@@ -166,10 +167,10 @@ ABW: {6:.2f}kg'''.format( d['bmi'][0],
         self.height_unit   = 'cm'
         self.weight_unit   = 'kg'
         self.user_sex      = 'Male'
-        self.stress_factor = '1'
+        self.stress_factor = '1.0'
 
 class MifflinCalc(NutritionCalc):
-    stress_factor = ObjectProperty('1')
+    stress_factor = ObjectProperty('1.0')
     title_text = 'Mifflin St. Jeor Equation'
 
     def energy_needs(self):
