@@ -1,88 +1,85 @@
 <NutritionCalc>:
 	orientation: 'vertical'
+	Image:
+		source: 'logo.png'
+		size_hint: (1, 0.1)
+	Label:
+		text: root.title_text
+		font_size: '28sp'
+		size_hint: (1, 0.1)
+		padding: (0, 0)
+		border: 0
+		
 	BoxLayout:
-		orientation: 'vertical'
-
-		Image:
-			source: 'logo.png'
-			size_hint: (1, 0.1)
+		orientation: 'horizontal'
+		size_hint: (1, 0.04)
 		Label:
-			text: root.title_text
-			font_size: '28sp'
-			size_hint: (1, 0.1)
-			padding: (0, 0)
-			border: 0
-		BoxLayout:
-			orientation: 'horizontal'
-			size_hint: (1, 0.1)
+			text: 'Height'
+			font_size: '20sp'
+		TextInput:
+			input_type: 'number'
+			text: root.user_height
+			multiline: False
+			font_size: '24sp'
+			on_text: root.user_height = self.text
+		Spinner:
+			text: root.height_unit
+			on_text: root.height_unit = self.text
+			values: ( 'cm', 'in' )
+			font_size: '20sp'		
 			
-			Label:
-				text: 'Height'
-				font_size: '20sp'
-			TextInput:
-				input_type: 'number'
-				text: root.user_height
-				multiline: False
-				font_size: '20sp'
-				on_text: root.user_height = self.text
-			Spinner:
-				text: root.height_unit
-				on_text: root.height_unit = self.text
-				values: ( 'cm', 'in' ) 
-				font_size: '20sp'		
-				
-		BoxLayout:
-			orientation: 'horizontal'
-			size_hint: (1, 0.1)
+	BoxLayout:
+		orientation: 'horizontal'
+		size_hint: (1, 0.04)
+		
+		Label:
+			text: 'Weight'
+			font_size: '20sp'
+		TextInput:
+			text: root.user_weight
+			multiline: False
+			font_size: '24sp'
+			input_type: 'number'
+			on_text: root.user_weight = self.text
+		Spinner:
+			text: root.weight_unit
+			on_text: root.weight_unit = self.text
+			values: ( 'kg', 'lbs' ) 
+			font_size: '20sp'		
 			
-			Label:
-				text: 'Weight'
-				font_size: '20sp'
-			TextInput:
-				text: root.user_weight
-				multiline: False
-				font_size: '20sp'
-				input_type: 'number'
-				on_text: root.user_weight = self.text
-			Spinner:
-				text: root.weight_unit
-				on_text: root.weight_unit = self.text
-				values: ( 'kg', 'lbs' ) 
-				font_size: '20sp'		
-				
-		BoxLayout:
-			orientation: 'horizontal'
-			size_hint: (1, 0.1)
+	BoxLayout:
+		orientation: 'horizontal'
+		size_hint: (1, 0.04)
 
-			Label:
-				text: 'Age'
-				font_size: '20sp'
-			TextInput:
-				text: root.user_age
-				input_type: 'number'
-				multiline: False
-				font_size: '20sp'
-				on_text: root.user_age = self.text
-			Label:
-	  
-		BoxLayout:
-			orientation: 'horizontal'
-			size_hint: (1, 0.1)
-			
-			Label:
-				text: 'Sex'
-				font_size: '20sp'
-			Spinner:
-				text: root.user_sex
-				values: ( 'Male', 'Female' )
-				on_text: root.user_sex = self.text
-				font_size: '20sp'
-			Label:
+		Label:
+			text: 'Age'
+			font_size: '20sp'
+		TextInput:
+			text: root.user_age
+			input_type: 'number'
+			multiline: False
+			font_size: '24sp'
+			on_text: root.user_age = self.text
+		Label:
+  
+	BoxLayout:
+		orientation: 'horizontal'
+		size_hint: (1, 0.04)
+		
+		Label:
+			text: 'Sex'
+			font_size: '20sp'
+		Spinner:
+			text: root.user_sex
+			values: ( 'Male', 'Female' )
+			on_text: root.user_sex = self.text
+			font_size: '20sp'
+		Label:
 
 <MifflinCalc>:
 	BoxLayout:
 		orientation: 'horizontal'
-		size_hint: (1, 0.1)
+		size_hint: (1, 0.04)
 		Label:
 			text: 'Factor'
 			font_size: '20sp'
@@ -90,13 +87,16 @@
 			input_type: 'number'
 			text: root.stress_factor
 			multiline: False
-			font_size: '20sp'
+			font_size: '24sp'
 			on_text: root.stress_factor = self.text
 		Label:
-			
+	Label:
+		size_hint: (1, 0.01)
 	BoxLayout:
 		orientation: 'horizontal'
-		size_hint: (1, 0.2)
+		size_hint: (1, 0.1)
+		Label:
+			size_hint: (0.03, 1)
 			
 		Button:
 			text: 'Calculate'
@@ -106,6 +106,10 @@
 			text: 'Reset'
 			font_size: '28sp'
 			on_release: root.reset_fields()
+		Label:
+			size_hint: (0.03, 1)
+	Label:
+		size_hint: (1, 0.01)
 				
 <PennCalc>:
 	BoxLayout:
@@ -128,8 +132,7 @@
     TabbedPanelItem:
         text: 'Welcome'
         RstDocument:
-            id: default_content
-            text: "Welcome to NutritionBuddy" + "\n---------------" + "\nI calculate things!"
+            source: 'welcome.rst'
 
     TabbedPanelItem:
         id: Mifflin
@@ -140,11 +143,3 @@
         id: pennst
         text: 'PennSt'
 		PennCalc:
-    TabbedPanelItem:
-        text: 'Coming Soon'
-        Label:
-            text: 'Coming Soon'
-    TabbedPanelItem:
-        text: 'Coming Soon'
-        Label:
-            text: 'Coming Soon'
