@@ -78,17 +78,16 @@ def pennstate(weight_kg, height_cm, gender, age, temp_celcius, vent_rate):
     """
     equation = ""
     base_needs = mifflin(weight_kg, height_cm, gender, age)
-    
-    if (bodymassindex(weight_kg, height_cm)[0] > 29.9) and (age > 59):
+    if (body_mass_index(weight_kg, height_cm)[0] > 29.9) and (age > 59):
         rmr = base_needs * Decimal('0.71') + Decimal(vent_rate) * Decimal('64.0')\
-              + temp_celcius * Decimal('85') - Decimal('3085')
+              + Decimal(temp_celcius) * Decimal('85') - Decimal('3085')
         equation = "PennSt(2010)"
         
     else:
         rmr = base_needs * Decimal('0.96') + Decimal(vent_rate) * Decimal('31.0')\
-              + temp_celcius * Decimal('167') - Decimal('6212')
+              + Decimal(temp_celcius) * Decimal('167') - Decimal('6212')
         equation = "PennSt(2003B)"
-    return rmr, equation
+    return rmr
 
 def protein(pro_range, weight_kg):
     """
