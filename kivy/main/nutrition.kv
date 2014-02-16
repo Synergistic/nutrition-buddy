@@ -2,7 +2,7 @@
 	orientation: 'vertical'
 	Image:
 		source: 'logo.png'
-		size_hint: (1, 0.1)
+		size_hint: (1, 0.15)
 	Label:
 		text: root.title_text
 		font_size: '28sp'
@@ -114,7 +114,37 @@
 <PennCalc>:
 	BoxLayout:
 		orientation: 'horizontal'
-		size_hint: (1, 0.2)
+		size_hint: (1, 0.04)
+		Label:
+			text: 'Tmax'
+			font_size: '20sp'
+		TextInput:
+			input_type: 'number'
+			text: root.max_temp
+			multiline: False
+			font_size: '24sp'
+			on_text: root.max_temp = self.text
+		Label:
+	BoxLayout:
+		orientation: 'horizontal'
+		size_hint: (1, 0.04)
+		Label:
+			text: 'Ve'
+			font_size: '20sp'
+		TextInput:
+			input_type: 'number'
+			text: root.ventilation
+			multiline: False
+			font_size: '24sp'
+			on_text: root.ventilation = self.text
+		Label:
+	Label:
+		size_hint: (1, 0.01)
+	BoxLayout:
+		orientation: 'horizontal'
+		size_hint: (1, 0.1)
+		Label:
+			size_hint: (0.03, 1)
 			
 		Button:
 			text: 'Calculate'
@@ -124,6 +154,11 @@
 			text: 'Reset'
 			font_size: '28sp'
 			on_release: root.reset_fields()
+		Label:
+			size_hint: (0.03, 1)
+	Label:
+		size_hint: (1, 0.01)
+		
             
             
 <Widgets>:
@@ -131,8 +166,8 @@
     do_default_tab: False
     TabbedPanelItem:
         text: 'Welcome'
-        RstDocument:
-            source: 'welcome.rst'
+        Label:
+            text: root.welcome_text
 
     TabbedPanelItem:
         id: Mifflin
