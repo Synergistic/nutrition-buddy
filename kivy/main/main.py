@@ -80,6 +80,7 @@ class NutritionCalc(BoxLayout):
             d['abw'] = adjust_body_weight( d['ibw_kg'], d['kg'] )
 	else:
 	  d['abw'] = None
+	
         #determine energy needs using Mifflin-St.Jeor
         self.energy_needs()
         
@@ -179,9 +180,16 @@ class MifflinCalc(NutritionCalc):
 	
 class PennCalc(NutritionCalc):
     title_text = 'Penn State Equation'
-	
+    max_temp = ObjectProperty('')
+    ventilation = ObjectProperty('')
+
+    def energy_needs(self):
+	print d['kg'], d['cm'], d['sex'], d['age'], self.max_temp, self.ventilation
+        d['calories'] = \
+        pennstate(d['kg'], d['cm'], d['sex'], d['age'], self.max_temp, self.ventilation)
+
 class Widgets(TabbedPanel):
-	pass
+    welcome_text = "Welcome to Nutrition Buddy\nI calculate things!\nSelect a calculator below to get started."
         
 class NutritionApp(App):
     title = "Nutrition Buddy"
