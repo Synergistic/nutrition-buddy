@@ -84,7 +84,7 @@ class NutritionCalc(BoxLayout):
 	else:
 	  d['abw'] = None
 	
-        #determine energy needs using appropriate equation
+	#determine energy needs using appropriate equation
         self.energy_needs()
         
 		
@@ -116,7 +116,7 @@ class NutritionCalc(BoxLayout):
         popup_content.add_widget( d_layout )
         popup_content.add_widget( confirm_button )
 
-        pop_window = Popup(title = 'Results', size_hint = (0.95, 0.65), 
+        pop_window = Popup(title = self.title_text, size_hint = (0.95, 0.65), 
                             content = popup_content)
 
         confirm_button.bind(on_release = pop_window.dismiss)   
@@ -141,7 +141,7 @@ class NutritionCalc(BoxLayout):
         inputbox.add_widget(input_d_converted)
 
         #the output calculations
-        output_base_d = Label(text= '''Calories: {4:.1f} ({5:.0f}kcal/kg)
+        output_base_d = Label(text='''Calories: {4:.1f} ({5:.0f}kcal/kg)
 BMI: {0:.2f} - {1}\nIBW: {2:.2f}kg ({3:.2f}%)'''.format( d['bmi'][0],
         d['bmi'][1], d['ibw_kg'], d['%ibw'], d['calories'], 
         (d['calories']/d['kg'])
@@ -187,12 +187,15 @@ class PennCalc(NutritionCalc):
     title_text = 'Penn State Equation'
     max_temp = ObjectProperty('')
     ventilation = ObjectProperty('')
+    temp_unit = ObjectProperty('C')
 
     def energy_needs(self):
-	print d['kg'], d['cm'], d['sex'], d['age'], self.max_temp, self.ventilation
+	max_temp = self.max_temp
+	if self.temp_unit == 'F':
+	    max_temp = fahren_to_c(self.max_temp)
         d['calories'] = \
-        pennstate(d['kg'], d['cm'], d['sex'], d['age'], self.max_temp, self.ventilation)
-
+        pennstate(d['kg'], d['cm'], d['sex'], d['age'], max_temp, self.ventilation)
+  
 class Widgets(TabbedPanel):
     welcome_text = "Welcome to Nutrition Buddy\nI calculate things!\nSelect a calculator below to get started."
         
