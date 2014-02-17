@@ -5,11 +5,8 @@
 		size_hint: (1, 0.15)
 	Label:
 		text: root.title_text
-		font_size: '28sp'
-		size_hint: (1, 0.1)
-		padding: (0, 0)
-		border: 0
-		
+		font_size: '26sp'
+		size_hint: (1, 0.07)
 	BoxLayout:
 		orientation: 'horizontal'
 		size_hint: (1, 0.04)
@@ -124,7 +121,11 @@
 			multiline: False
 			font_size: '24sp'
 			on_text: root.max_temp = self.text
-		Label:
+		Spinner:
+			text: root.temp_unit
+			values: ( 'C', 'F' )
+			on_text: root.temp_unit = self.text
+			font_size: '20sp'		
 	BoxLayout:
 		orientation: 'horizontal'
 		size_hint: (1, 0.04)
