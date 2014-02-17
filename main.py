@@ -1,10 +1,12 @@
 
 from kivy.app import App
-from nutcalc import *
-from decimal import Decimal
+
+import calc.convert as convert
+import calc.anthropometrics as anthro
+import calc.nutrientneeds as nutcalc
+
 
 from kivy.properties import ObjectProperty
-
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.label import Label
@@ -32,19 +34,15 @@ class NutritionCalc(BoxLayout):
         '''Run the calculator by initializing the data dic, gathering
         input from appropriate fields, computing necessary values, and
 		finally building the pop up to display output'''
-        try:
-            self.clear_data()
-            print 'Data cleared'
-            self.collect_input()
-            print 'Inputs collected'
-            self.calculations()
-            print 'Calculations done'
-            self.output_popup()
-            print 'Popup built'
-			
-        except:
-            print "Error, something not filled out proper"
-            return None
+
+	self.clear_data()
+	print 'Data cleared'
+	self.collect_input()
+	print 'Inputs collected'
+	self.calculations()
+	print 'Calculations done'
+	self.output_popup()
+	print 'Popup built'
 		
     def clear_data(self):
         '''Method to (re)initialize the d dic'''
@@ -54,10 +52,10 @@ class NutritionCalc(BoxLayout):
     def collect_input(self):
         '''Method to collect & organize the user entered d'''
         #height collection and storage
-        d[self.height_unit] = Decimal(self.user_height)
+        d[self.height_unit] = convert.to_decimal(self.user_height)
 
         #weight collection and storage
-        d[self.weight_unit] = Decimal(self.user_weight)
+        d[self.weight_unit] = convert.to_decimal(self.user_weight)
 
         #sex collection and storage
         d['age'] = int(self.user_age)
@@ -72,15 +70,16 @@ class NutritionCalc(BoxLayout):
         self.conversions()
 	
 	#determine bmi
-        d['bmi'] = body_mass_index( d['kg'], d['cm'] )
+        d['bmi'] = anthro.body_mass_index( d['kg'], d['cm'] )
 	
 	#determine ibw and %ibw
-        d['ibw_lbs'], d['ibw_kg'] = ideal_body_weight(d['lbs'], d['in'], d['sex'])
-        d['%ibw'] = percent_ideal_body_weight(d['kg'], d['ibw_kg'])
+        d['ibw_lbs'] = anthro.ideal_body_weight(d['lbs'], d['in'], d['sex'])
+        d['ibw_kg'] = convert.to_kilograms(d['ibw_lbs'])
+        d['%ibw'] = anthro.percent_ideal_body_weight(d['kg'], d['ibw_kg'])
 		
 	#if currently more than 125% IBW, we need an adjusted body weight
         if d['%ibw'] >= 125.0:
-            d['abw'] = adjust_body_weight( d['ibw_kg'], d['kg'] )
+            d['abw'] = anthro.adjust_body_weight( d['ibw_kg'], d['kg'] )
 	else:
 	  d['abw'] = None
 	
@@ -90,17 +89,17 @@ class NutritionCalc(BoxLayout):
 		
     def conversions(self):
 	
-        if d['kg']: #convert to pounds
-            d['lbs'] = kg_to_lbs(d['kg'])
+        if self.weight_unit == 'kg': #convert to pounds
+            d['lbs'] = convert.to_pounds(d['kg'])
 			
-        elif not d['kg']: #convert to kilograms
-            d['kg'] = lbs_to_kg(d['lbs'])
+        elif self.weight_unit == 'lbs': #convert to kilograms
+            d['kg'] = convert.to_kilograms(d['lbs'])
 
-        if d['cm']: #convert to inches
-            d['in'] = cm_to_inch(d['cm'])
+        if self.height_unit == 'cm': #convert to inches
+            d['in'] = convert.to_inches(d['cm'])
 			
-        elif not d['cm']: #convert to centimetres
-            d['cm'] = inch_to_cm(d['in'])
+        elif self.height_unit == 'in': #convert to centimetres
+            d['cm'] = convert.to_centimeters(d['in'])
 
     def output_popup( self ):
         '''Method to build a pop up for displaying output'''
@@ -181,7 +180,7 @@ class MifflinCalc(NutritionCalc):
 
     def energy_needs(self):
         d['calories'] = \
-        mifflin(d['kg'], d['cm'], d['sex'], d['age']) * Decimal(self.stress_factor)
+        nutcalc.mifflin(d['kg'], d['cm'], d['sex'], d['age']) * convert.to_decimal(self.stress_factor)
 	
 class PennCalc(NutritionCalc):
     title_text = 'Penn State Equation'
@@ -190,13 +189,16 @@ class PennCalc(NutritionCalc):
     temp_unit = ObjectProperty('C')
 
     def energy_needs(self):
-	max_temp = self.max_temp
+	tmax = self.max_temp
 	if self.temp_unit == 'F':
-	    max_temp = fahren_to_c(self.max_temp)
+	    tmax = convert.to_celcius(self.max_temp)
+	    
+	base_needs = nutcalc.mifflin(d['kg'], d['cm'], d['sex'], d['age'])
         d['calories'] = \
-        pennstate(d['kg'], d['cm'], d['sex'], d['age'], max_temp, self.ventilation)
+        nutcalc.pennstate(base_needs, d['bmi'], d['sex'], d['age'], tmax, self.ventilation)
   
 class Widgets(TabbedPanel):
+    '''Base tabbed panels for holding each calculator. Contains the welcome page as well.'''
     welcome_text = "Welcome to Nutrition Buddy\nI calculate things!\nSelect a calculator below to get started."
         
 class NutritionApp(App):
