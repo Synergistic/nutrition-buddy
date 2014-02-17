@@ -67,11 +67,14 @@ class NutritionCalc(BoxLayout):
 		
     def calculations(self):
         '''Method to compute all necessary information and convert'''
-		
+	
+	#convert to opposite units
         self.conversions()
-
+	
+	#determine bmi
         d['bmi'] = body_mass_index( d['kg'], d['cm'] )
-		
+	
+	#determine ibw and %ibw
         d['ibw_lbs'], d['ibw_kg'] = ideal_body_weight(d['lbs'], d['in'], d['sex'])
         d['%ibw'] = percent_ideal_body_weight(d['kg'], d['ibw_kg'])
 		
@@ -81,7 +84,7 @@ class NutritionCalc(BoxLayout):
 	else:
 	  d['abw'] = None
 	
-        #determine energy needs using Mifflin-St.Jeor
+        #determine energy needs using appropriate equation
         self.energy_needs()
         
 		
@@ -169,6 +172,8 @@ ABW: {6:.2f}kg'''.format( d['bmi'][0],
         self.weight_unit   = 'kg'
         self.user_sex      = 'Male'
         self.stress_factor = '1.0'
+        self.max_temp      = ''
+        self.ventilation   = ''
 
 class MifflinCalc(NutritionCalc):
     stress_factor = ObjectProperty('1.0')
