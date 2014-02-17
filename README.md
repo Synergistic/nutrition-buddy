@@ -1,4 +1,4 @@
-nutrition-calc
+Nutrition Buddy
 ==============
 
 Python calculator for clinical nutrition
