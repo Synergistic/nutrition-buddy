@@ -15,10 +15,10 @@
 			font_size: '20sp'
 		TextInput:
 			input_type: 'number'
-			text: root.user_height
+			text: root.height_value
 			multiline: False
 			font_size: '24sp'
-			on_text: root.user_height = self.text
+			on_text: root.height_value = self.text
 		Spinner:
 			text: root.height_unit
 			on_text: root.height_unit = self.text
@@ -33,11 +33,11 @@
 			text: 'Weight'
 			font_size: '20sp'
 		TextInput:
-			text: root.user_weight
+			text: root.weight_value
 			multiline: False
 			font_size: '24sp'
 			input_type: 'number'
-			on_text: root.user_weight = self.text
+			on_text: root.weight_value = self.text
 		Spinner:
 			text: root.weight_unit
 			on_text: root.weight_unit = self.text
@@ -52,11 +52,11 @@
 			text: 'Age'
 			font_size: '20sp'
 		TextInput:
-			text: root.user_age
+			text: root.age
 			input_type: 'number'
 			multiline: False
 			font_size: '24sp'
-			on_text: root.user_age = self.text
+			on_text: root.age = self.text
 		Label:
   
 	BoxLayout:
@@ -67,9 +67,9 @@
 			text: 'Sex'
 			font_size: '20sp'
 		Spinner:
-			text: root.user_sex
+			text: root.sex
 			values: ( 'Male', 'Female' )
-			on_text: root.user_sex = self.text
+			on_text: root.sex = self.text
 			font_size: '20sp'
 		Label:
 
