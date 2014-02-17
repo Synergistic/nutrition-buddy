@@ -4,6 +4,7 @@ from kivy.app import App
 import calc.convert as convert
 import calc.anthropometrics as anthro
 import calc.nutrientneeds as nutcalc
+import calculations as calc
 
 
 from kivy.properties import ObjectProperty
@@ -13,21 +14,19 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 
-d = {} #This is where we'll store everything
-
 class NutritionCalc(BoxLayout):
     '''Parent widget that holds all labels, text inputs, buttons, etc.'''
     
     title_text = "Nutrition Calculator"
     #values from the height, weight, age text inputs
-    user_height   = ObjectProperty('')
-    user_weight   = ObjectProperty('')
-    user_age      = ObjectProperty('')
+    height_value   = ObjectProperty('')
+    weight_value   = ObjectProperty('')
+    age      = ObjectProperty('')
   
     #value from the height, weight, sex spinners
     height_unit = ObjectProperty('cm')
     weight_unit = ObjectProperty('kg')
-    user_sex    = ObjectProperty('Male')
+    sex    = ObjectProperty('Male')
 
     
     def run_calculator(self):
@@ -35,80 +34,20 @@ class NutritionCalc(BoxLayout):
         input from appropriate fields, computing necessary values, and
 		finally building the pop up to display output'''
 
-	self.clear_data()
-	print 'Data cleared'
-	self.collect_input()
-	print 'Inputs collected'
-	self.calculations()
-	print 'Calculations done'
-	self.output_popup()
-	print 'Popup built'
+	d = calc.calculations(self.height_value, self.height_unit, 
+		   self.weight_value, self.weight_unit, 
+		   self.age, self.sex, self.title_text)
+	self.wrap(d)
+	
 		
-    def clear_data(self):
-        '''Method to (re)initialize the d dic'''
-	for key in d:
-	    d[key] = None
- 
-    def collect_input(self):
-        '''Method to collect & organize the user entered d'''
-        #height collection and storage
-        d[self.height_unit] = convert.to_decimal(self.user_height)
-
-        #weight collection and storage
-        d[self.weight_unit] = convert.to_decimal(self.user_weight)
-
-        #sex collection and storage
-        d['age'] = int(self.user_age)
-
-        #age collection and storage
-        d['sex'] = self.user_sex.lower()
-		
-    def calculations(self):
-        '''Method to compute all necessary information and convert'''
-	
-	#convert to opposite units
-        self.conversions()
-	
-	#determine bmi
-        d['bmi'] = anthro.body_mass_index( d['kg'], d['cm'] )
-	
-	#determine ibw and %ibw
-        d['ibw_lbs'] = anthro.ideal_body_weight(d['lbs'], d['in'], d['sex'])
-        d['ibw_kg'] = convert.to_kilograms(d['ibw_lbs'])
-        d['%ibw'] = anthro.percent_ideal_body_weight(d['kg'], d['ibw_kg'])
-		
-	#if currently more than 125% IBW, we need an adjusted body weight
-        if d['%ibw'] >= 125.0:
-            d['abw'] = anthro.adjust_body_weight( d['ibw_kg'], d['kg'] )
-	else:
-	  d['abw'] = None
-	
-	#determine energy needs using appropriate equation
-        self.energy_needs()
-        
-		
-    def conversions(self):
-	
-        if self.weight_unit == 'kg': #convert to pounds
-            d['lbs'] = convert.to_pounds(d['kg'])
-			
-        elif self.weight_unit == 'lbs': #convert to kilograms
-            d['kg'] = convert.to_kilograms(d['lbs'])
-
-        if self.height_unit == 'cm': #convert to inches
-            d['in'] = convert.to_inches(d['cm'])
-			
-        elif self.height_unit == 'in': #convert to centimetres
-            d['cm'] = convert.to_centimeters(d['in'])
-
-    def output_popup( self ):
+    def output_popup(self, d):
         '''Method to build a pop up for displaying output'''
 
         #button to close popup
         confirm_button = Button(text = 'Close', size_hint = (1, 0.25))
         
         #making the content based on input/output
-        d_layout = self.make_content()
+        d_layout = self.make_content(d)
 
         #Add popup content and open it
         popup_content = BoxLayout( orientation = 'vertical' )
@@ -121,7 +60,7 @@ class NutritionCalc(BoxLayout):
         confirm_button.bind(on_release = pop_window.dismiss)   
         pop_window.open()
 
-    def make_content(self):
+    def make_content(self, d):
         '''Method to generate the content show in the popup window'''
         
         #display user input as metric units
@@ -164,12 +103,12 @@ ABW: {6:.2f}kg'''.format( d['bmi'][0],
 		
     def reset_fields(self):
         '''Method attached to the reset button to re-initialize all fields'''   
-        self.user_height   = ''
-        self.user_weight   = ''
-        self.user_age      = ''
+        self.height_value  = ''
+        self.weight_value  = ''
+        self.age           = ''
         self.height_unit   = 'cm'
         self.weight_unit   = 'kg'
-        self.user_sex      = 'Male'
+        self.sex           = 'Male'
         self.stress_factor = '1.0'
         self.max_temp      = ''
         self.ventilation   = ''
@@ -177,10 +116,11 @@ ABW: {6:.2f}kg'''.format( d['bmi'][0],
 class MifflinCalc(NutritionCalc):
     stress_factor = ObjectProperty('1.0')
     title_text = 'Mifflin St. Jeor Equation'
-
-    def energy_needs(self):
-        d['calories'] = \
-        nutcalc.mifflin(d['kg'], d['cm'], d['sex'], d['age']) * convert.to_decimal(self.stress_factor)
+    def wrap(self,d):
+	d['calories'] = calc.energy_needs(d, self.title_text)
+	self.output_popup(d)
+	print "I only print when doing Mifflin!"
+	
 	
 class PennCalc(NutritionCalc):
     title_text = 'Penn State Equation'
@@ -188,15 +128,15 @@ class PennCalc(NutritionCalc):
     ventilation = ObjectProperty('')
     temp_unit = ObjectProperty('C')
 
-    def energy_needs(self):
-	tmax = self.max_temp
-	if self.temp_unit == 'F':
-	    tmax = convert.to_celcius(self.max_temp)
-	    
-	base_needs = nutcalc.mifflin(d['kg'], d['cm'], d['sex'], d['age'])
-        d['calories'] = \
-        nutcalc.pennstate(base_needs, d['bmi'], d['sex'], d['age'], tmax, self.ventilation)
-  
+    def wrap(self, d):
+	d['temp_unit'] = self.temp_unit
+	d['tmax'] = self.max_temp
+	d['ventilation'] = self.ventilation
+	d['calories'] = calc.energy_needs(d, self.title_text)
+	self.output_popup(d)
+	
+    
+	
 class Widgets(TabbedPanel):
     '''Base tabbed panels for holding each calculator. Contains the welcome page as well.'''
     welcome_text = "Welcome to Nutrition Buddy\nI calculate things!\nSelect a calculator below to get started."
