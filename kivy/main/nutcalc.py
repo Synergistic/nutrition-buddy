@@ -134,10 +134,8 @@ def inch_to_cm(height_in):
     return height_in * Decimal('2.54')
 
 def fahren_to_c(f):
-    return (f - Decimal('32.0')) * (Decimal('5') / Decimal('9'))
+    return (Decimal(f) - Decimal('32.0')) * (Decimal('5') / Decimal('9'))
 
-def celcius_to_f(c):
-    pass
     
     
     
