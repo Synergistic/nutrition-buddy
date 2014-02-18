@@ -1,12 +1,9 @@
-
-from kivy.app import App
-
 import calc.convert as convert
 import calc.anthropometrics as anthro
 import calc.nutrientneeds as nutcalc
 import calculations as calc
 
-
+from kivy.app import App
 from kivy.properties import ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.tabbedpanel import TabbedPanel
@@ -17,28 +14,27 @@ from kivy.uix.popup import Popup
 class NutritionCalc(BoxLayout):
     '''Parent widget that holds all labels, text inputs, buttons, etc.'''
     
-    title_text = "Nutrition Calculator"
     #values from the height, weight, age text inputs
-    height_value   = ObjectProperty('')
-    weight_value   = ObjectProperty('')
-    age      = ObjectProperty('')
-  
-    #value from the height, weight, sex spinners
-    height_unit = ObjectProperty('cm')
-    weight_unit = ObjectProperty('kg')
-    sex    = ObjectProperty('Male')
+    height_value, weight_value = ObjectProperty(''), ObjectProperty('')
+    height_unit, weight_unit = ObjectProperty('cm'), ObjectProperty('kg')
+    age, sex = ObjectProperty(''), ObjectProperty('Male')
 
-    
     def run_calculator(self):
         '''Run the calculator by initializing the data dic, gathering
         input from appropriate fields, computing necessary values, and
-		finally building the pop up to display output'''
-
-	d = calc.calculations(self.height_value, self.height_unit, 
-		   self.weight_value, self.weight_unit, 
-		   self.age, self.sex, self.title_text)
-	self.wrap(d)
+	finally building the pop up to display output'''
 	
+	d = calc.calculations(self.height_value, self.height_unit, 
+			      self.weight_value, self.weight_unit, 
+			      self.age, self.sex, self.title_text)
+	
+	if 'Penn' in self.title_text:
+	    d['tmax']        = self.max_temp
+	    d['temp_unit']   = self.temp_unit
+	    d['ventilation'] = self.ventilation
+	
+	d['calories'] = calc.energy_needs(d, self.title_text)
+	self.output_popup(d)	
 		
     def output_popup(self, d):
         '''Method to build a pop up for displaying output'''
@@ -79,21 +75,24 @@ class NutritionCalc(BoxLayout):
         inputbox.add_widget(input_d_converted)
 
         #the output calculations
-        output_base_d = Label(text='''Calories: {4:.1f} ({5:.0f}kcal/kg)
-BMI: {0:.2f} - {1}\nIBW: {2:.2f}kg ({3:.2f}%)'''.format( d['bmi'][0],
-        d['bmi'][1], d['ibw_kg'], d['%ibw'], d['calories'], 
-        (d['calories']/d['kg'])
-        ))
+        output_text = ['Calories: {cal:.1f} ({cal_kg:.0f}kcal/kg)', 
+		       'BMI: {bmi:.2f} - {bmi_category}', 
+		       'IBW: {ibw:.2f}kg ({percent_ibw:.2f}%)']
+	
+        output_base_d = Label(text= "\n".join(output_text).format( 
+	  cal = d['calories'], cal_kg = d['calories']/d['kg'],
+	  bmi = d['bmi'][0], bmi_category = d['bmi'][1], 
+	  ibw = d['ibw_kg'], percent_ibw = d['%ibw']))
+	
 	
         #if adjusted body weight applicable (>= 125% IBW ) add it in to the output
         if d['abw']:
-            output_base_d.text = '''Calories: {4:.1f} ({5:.0f}kcal/kg)
-BMI: {0:.2f} - {1}\nIBW: {2:.2f}kg ({3:.2f}%)
-ABW: {6:.2f}kg'''.format( d['bmi'][0],
-            d['bmi'][1], d['ibw_kg'], d['%ibw'], d['calories'], 
-            (d['calories']/d['kg']), d['abw']
-            )
-    
+	    output_text.append('ABW: {abw:.2f}kg')
+            output_base_d.text = "\n".join(output_text).format( 
+	      cal = d['calories'], cal_kg = d['calories']/d['kg'],
+	      bmi = d['bmi'][0], bmi_category = d['bmi'][1], 
+	      ibw = d['ibw_kg'], percent_ibw = d['%ibw'], abw = d['abw'])
+	    
         #Box layout to organize all input and output d
         d_layout = BoxLayout(orientation = 'vertical')
         d_layout.add_widget(inputbox)
@@ -102,45 +101,28 @@ ABW: {6:.2f}kg'''.format( d['bmi'][0],
         return d_layout
 		
     def reset_fields(self):
-        '''Method attached to the reset button to re-initialize all fields'''   
-        self.height_value  = ''
-        self.weight_value  = ''
-        self.age           = ''
+        '''Method attached to the reset button to re-initialize all fields'''
+        self.height_value  = self.weight_value = self.age = ''
         self.height_unit   = 'cm'
         self.weight_unit   = 'kg'
         self.sex           = 'Male'
         self.stress_factor = '1.0'
-        self.max_temp      = ''
-        self.ventilation   = ''
+        self.max_temp      = self.ventilation  = ''
 
 class MifflinCalc(NutritionCalc):
     stress_factor = ObjectProperty('1.0')
     title_text = 'Mifflin St. Jeor Equation'
-    def wrap(self,d):
-	d['calories'] = calc.energy_needs(d, self.title_text)
-	self.output_popup(d)
-	print "I only print when doing Mifflin!"
-	
 	
 class PennCalc(NutritionCalc):
     title_text = 'Penn State Equation'
-    max_temp = ObjectProperty('')
-    ventilation = ObjectProperty('')
+    max_temp, ventilation = ObjectProperty(''), ObjectProperty('')
     temp_unit = ObjectProperty('C')
 
-    def wrap(self, d):
-	d['temp_unit'] = self.temp_unit
-	d['tmax'] = self.max_temp
-	d['ventilation'] = self.ventilation
-	d['calories'] = calc.energy_needs(d, self.title_text)
-	self.output_popup(d)
-	
-    
-	
 class Widgets(TabbedPanel):
     '''Base tabbed panels for holding each calculator. Contains the welcome page as well.'''
-    welcome_text = "Welcome to Nutrition Buddy\nI calculate things!\nSelect a calculator below to get started."
-        
+    welcome_text = "\n".join(['Welcome to Nutrition Buddy',
+			      'I calculate things!', 
+			      'Select a calculator below to get started.'])
 class NutritionApp(App):
     title = "Nutrition Buddy"
 	
