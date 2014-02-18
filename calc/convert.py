@@ -7,7 +7,7 @@ def to_inches(height_cm):
     return Decimal(height_cm) / Decimal('2.54')
 
 def to_pounds(weight_kg):
-	return Decimal(weight_kg) * Decimal('2.2')
+    return Decimal(weight_kg) * Decimal('2.2')
 	
 def to_kilograms(weight_lbs):
     return Decimal(weight_lbs) / Decimal('2.2')
