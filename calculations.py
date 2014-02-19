@@ -5,11 +5,9 @@ from decimal import Decimal
 
 
 
-def calculations(height, height_unit, weight, weight_unit, age, sex, equation, *args):
+def calculations(height, height_unit, weight, weight_unit, age, sex):
     '''Method to compute all necessary information and convert'''
-    
     d = {}
-    
     #convert to opposite units
     anthropometrics = conversions(height, height_unit, weight, weight_unit)
     d['cm'] = anthropometrics[0]
@@ -34,39 +32,33 @@ def calculations(height, height_unit, weight, weight_unit, age, sex, equation, *
 	d['abw'] = None
     return d
   
-  
-
- 
-def energy_needs(d, equation):
-
+def energy_needs(d, args):
     #determine energy needs using mifflin
     needs = nutcalc.mifflin(d['kg'], d['cm'], d['sex'], d['age'])
-    
-    if 'Penn' in equation: #if pennstate is selected, use above value to determine pennstate
-	if d['temp_unit'] == 'F':
-	    tmax = convert.to_celcius(d['tmax'])
+    print args[0]
+    if 'Penn' in args[0]: #if pennstate is selected, use above value to determine pennstate
+	print 'unit', args[2]
+	print 'temp', args[1]
+	if args[2] == 'F':
+	    tmax = convert.to_celcius(args[1])
 	else:
-	    tmax = d['tmax']
-	    
-	needs = nutcalc.pennstate(needs, d['bmi'], d['sex'], d['age'], tmax, d['ventilation'])
-	
+	    tmax = args[1]
+	print 'vent', args[3]
+	needs = nutcalc.pennstate(needs, d['bmi'], d['sex'], d['age'], tmax, vent_rate=args[3])
     return needs
       
 def conversions(ht_value, start_ht_unit, wt_value, start_wt_unit):
     
     if start_ht_unit == 'cm': #convert to inches
         metric = [Decimal(ht_value)]
-	imperial = [convert.to_inches(ht_value)]
-		    
+	imperial = [convert.to_inches(ht_value)]    
     elif start_ht_unit == 'in': #convert to centimetres
         imperial = [Decimal(ht_value)]
 	metric = [convert.to_centimeters(ht_value)]
 
-    
     if start_wt_unit == 'kg': #convert to pounds
 	metric.append(Decimal(wt_value))
-	imperial.append(convert.to_pounds(wt_value))
-		    
+	imperial.append(convert.to_pounds(wt_value))	    
     elif start_wt_unit == 'lbs': #convert to kilograms
 	imperial.append(Decimal(wt_value))
 	metric.append(convert.to_kilograms(wt_value))

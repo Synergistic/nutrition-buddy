@@ -12,69 +12,57 @@ from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 
 class NutritionCalc(BoxLayout):
-    '''Parent widget that holds all labels, text inputs, buttons, etc.'''
-    
     #values from the height, weight, age text inputs
     height_value, weight_value = ObjectProperty(''), ObjectProperty('')
     height_unit, weight_unit = ObjectProperty('cm'), ObjectProperty('kg')
     age, sex = ObjectProperty(''), ObjectProperty('Male')
 
     def run_calculator(self):
-        '''Run the calculator by initializing the data dic, gathering
-        input from appropriate fields, computing necessary values, and
-	finally building the pop up to display output'''
-	
 	d = calc.calculations(self.height_value, self.height_unit, 
 			      self.weight_value, self.weight_unit, 
-			      self.age, self.sex, self.title_text)
-	
-	if 'Penn' in self.title_text:
-	    d['tmax']        = self.max_temp
-	    d['temp_unit']   = self.temp_unit
-	    d['ventilation'] = self.ventilation
-	
-	d['calories'] = calc.energy_needs(d, self.title_text)
+			      self.age, self.sex)
+	self.add_uniques()
+	d['calories'] = calc.energy_needs(d, self.unique_values)
 	self.output_popup(d)	
 		
     def output_popup(self, d):
         '''Method to build a pop up for displaying output'''
-
-        #button to close popup
-        confirm_button = Button(text = 'Close', size_hint = (1, 0.25))
-        
-        #making the content based on input/output
         d_layout = self.make_content(d)
 
         #Add popup content and open it
-        popup_content = BoxLayout( orientation = 'vertical' )
-        popup_content.add_widget( d_layout )
-        popup_content.add_widget( confirm_button )
+        confirm_button = Button(text = 'Close', size_hint = (1, 0.25))
+        popup_content = BoxLayout(orientation = 'vertical')
+        popup_content.add_widget(d_layout)
+        popup_content.add_widget(confirm_button)
 
-        pop_window = Popup(title = self.title_text, size_hint = (0.95, 0.65), 
-                            content = popup_content)
-
-        confirm_button.bind(on_release = pop_window.dismiss)   
+        pop_window = Popup(title = self.title_text, 
+			   size_hint = (0.95, 0.65), content = popup_content)
+	confirm_button.bind(on_release = pop_window.dismiss)   
         pop_window.open()
 
     def make_content(self, d):
-        '''Method to generate the content show in the popup window'''
-        
+	#
+	#Make a function out of these that takes a list of strings
+	#
         #display user input as metric units
-        input_d = Label( 
-        text = '   Metric:\n\nHeight: {0:.2f}cm\nWeight: {1:.2f}kg'.format( 
-        d['cm'], d['kg'] ))
+        metric_out = ['Metric:', 
+		      'Height: {height:.2f}cm', 
+		      'Weight: {weight:.2f}kg']        
+        anthro_l = Label(text = "\n".join(metric_out).format(
+			  height = d['cm'], weight = d['kg']))
 	
-        #display user input as imperial units
-        input_d_converted = Label(
-        text = '  Imperial:\n\nHeight: {0:.2f}in\nWeight: {1:.2f}lbs'.format( 
-        d['in'], d['lbs'] ) )
+	#display user input as imperial units
+        imperial_out = ['Imperial:', 
+			'Height: {height:.2f}in', 
+			'Weight: {weight:.2f}lbs']
+        anthro_r = Label(text = "\n".join(imperial_out).format(
+			  height = d['in'], weight = d['lbs']))
 	
-        #store the user input d labels in a box layout
+	#Make a boxlayout to hold anthros at the top
         inputbox = BoxLayout(orientation = 'horizontal')
-        inputbox.add_widget(input_d)
-        inputbox.add_widget(input_d_converted)
+        inputbox.add_widget(anthro_l)
+        inputbox.add_widget(anthro_r)
 
-        #the output calculations
         output_text = ['Calories: {cal:.1f} ({cal_kg:.0f}kcal/kg)', 
 		       'BMI: {bmi:.2f} - {bmi_category}', 
 		       'IBW: {ibw:.2f}kg ({percent_ibw:.2f}%)']
@@ -83,7 +71,6 @@ class NutritionCalc(BoxLayout):
 	  cal = d['calories'], cal_kg = d['calories']/d['kg'],
 	  bmi = d['bmi'][0], bmi_category = d['bmi'][1], 
 	  ibw = d['ibw_kg'], percent_ibw = d['%ibw']))
-	
 	
         #if adjusted body weight applicable (>= 125% IBW ) add it in to the output
         if d['abw']:
@@ -109,20 +96,31 @@ class NutritionCalc(BoxLayout):
         self.stress_factor = '1.0'
         self.max_temp      = self.ventilation  = ''
 
+
 class MifflinCalc(NutritionCalc):
     stress_factor = ObjectProperty('1.0')
     title_text = 'Mifflin St. Jeor Equation'
+    def add_uniques(self):
+	self.unique_values = [self.stress_factor]
+	
 	
 class PennCalc(NutritionCalc):
-    title_text = 'Penn State Equation'
     max_temp, ventilation = ObjectProperty(''), ObjectProperty('')
     temp_unit = ObjectProperty('C')
-
+    title_text = 'Penn State Equation'
+    
+    def add_uniques(self):
+	 self.unique_values = [self.title_text, self.max_temp,
+			      self.temp_unit, self.ventilation]
+	 
+	 
 class Widgets(TabbedPanel):
     '''Base tabbed panels for holding each calculator. Contains the welcome page as well.'''
     welcome_text = "\n".join(['Welcome to Nutrition Buddy',
 			      'I calculate things!', 
 			      'Select a calculator below to get started.'])
+    
+    
 class NutritionApp(App):
     title = "Nutrition Buddy"
 	
