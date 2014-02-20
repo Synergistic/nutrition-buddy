@@ -12,12 +12,11 @@ class NutritionCalc(BoxLayout):
     age, sex = ObjectProperty(''), ObjectProperty('Male')
 
     def run_calculator(self):
-	d = calc.initial_data(
-	  ht_value = self.height_value, ht_unit = self.height_unit, 
-	  wt_value = self.weight_value, wt_unit = self.weight_unit, 
-	  age = int(self.age), sex = self.sex.lower())
-	d['calories'] = calc.energy_needs(d, self.add_uniques())
-	output.make_popup(d, self.add_uniques())	
+	d = calc.initial_data(self.height_value, self.height_unit, 
+                        self.weight_value, self.weight_unit, 
+                        self.equation_specific(),
+                        age = int(self.age), sex = self.sex.lower())
+	output.make_popup(d, self.equation_specific())	
 			
     def reset_fields(self):
         '''Method attached to the reset button to re-initialize all fields'''
@@ -33,8 +32,8 @@ class MifflinCalc(NutritionCalc):
     stress_factor = ObjectProperty('1.0')
     title_text = 'Mifflin St. Jeor Equation'
     
-    def add_uniques(self):
-	return [self.title_text, self.stress_factor]
+    def equation_specific(self):
+        return [self.title_text, self.stress_factor]
 	
 	
 class PennCalc(NutritionCalc):
@@ -42,9 +41,9 @@ class PennCalc(NutritionCalc):
     temp_unit = ObjectProperty('C')
     title_text = 'Penn State Equation'
     
-    def add_uniques(self):
-	return [self.title_text, self.max_temp, 
-		self.temp_unit, self.ventilation]
+    def equation_specific(self):
+        return [self.title_text, self.max_temp, 
+                self.temp_unit, self.ventilation]
 	 
 	 
 class Pages(TabbedPanel):
