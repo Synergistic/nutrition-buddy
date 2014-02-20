@@ -2,17 +2,16 @@ import calc.convert as convert
 import calc.anthropometrics as anthro
 import calc.nutrientneeds as nutcalc
 
-def initial_data(height, height_unit, weight, weight_unit, age, sex):
+def initial_data(**kwargs):
     '''Method to compute all necessary information and convert'''
-    d = {}
+    
     #convert to opposite units
-    weights_and_heights = conversions(height, height_unit, weight, weight_unit)
-    d['cm'] = weights_and_heights[0]
-    d['kg'] = weights_and_heights[1]
-    d['in'] = weights_and_heights[2]
-    d['lbs'] = weights_and_heights[3]
-    d['age'] = int(age)
-    d['sex'] = sex.lower()
+    weights_and_heights = conversions(
+      kwargs.pop("ht_value"), kwargs.pop("ht_unit"), 
+      kwargs.pop("wt_value"), kwargs.pop("wt_unit"))
+    
+    d = kwargs.copy()
+    d.update(weights_and_heights)
     
     #determine bmi
     d['bmi'] = anthro.body_mass_index( d['kg'], d['cm'] )
@@ -42,19 +41,19 @@ def energy_needs(d, args):
     return needs
       
 def conversions(ht_value, start_ht_unit, wt_value, start_wt_unit):
-    
+    new_values = {}
     if start_ht_unit == 'cm': #convert to inches
-        metric = [convert.to_decimal(ht_value)]
-	imperial = [convert.to_inches(ht_value)]    
+        new_values['cm'] = convert.to_decimal(ht_value)
+	new_values['in'] = convert.to_inches(ht_value) 
     elif start_ht_unit == 'in': #convert to centimetres
-        imperial = [convert.to_decimal(ht_value)]
-	metric = [convert.to_centimeters(ht_value)]
+        new_values['in']  = convert.to_decimal(ht_value)
+	new_values['cm'] = convert.to_centimeters(ht_value)
 
     if start_wt_unit == 'kg': #convert to pounds
-	metric.append(convert.to_decimal(wt_value))
-	imperial.append(convert.to_pounds(wt_value))	    
+	new_values['kg'] = convert.to_decimal(wt_value)
+	new_values['lbs'] =convert.to_pounds(wt_value)    
     elif start_wt_unit == 'lbs': #convert to kilograms
-	imperial.append(convert.to_decimal(wt_value))
-	metric.append(convert.to_kilograms(wt_value))
+	new_values['lbs'] =convert.to_decimal(wt_value)
+	new_values['kg'] = convert.to_kilograms(wt_value)
 
-    return metric + imperial
+    return new_values
