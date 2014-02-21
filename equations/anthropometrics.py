@@ -1,14 +1,12 @@
 from decimal import Decimal
 
+
 def body_mass_index(weight_kg, height_cm):
     """
     Calculates Body Mass Index(BMI):
     bmi = (weight(kg) / (height(meters)**2))
-    Then determines the appropriate category
-    """
-    
-    bmi = Decimal( weight_kg ) / ( ( Decimal(height_cm) / 100 ) ** 2 )
-    
+    Then determines the appropriate category"""
+    bmi = Decimal(weight_kg) / ((Decimal(height_cm) / 100) ** 2)
     if bmi < 18.50:
         category = "Underweight"
     elif bmi >= 18.5 and bmi <= 24.99:
@@ -21,8 +19,9 @@ def body_mass_index(weight_kg, height_cm):
         category = "Obese II"
     elif bmi > 39.99:
         category = "Obese III"
-        
+
     return bmi, category
+
 
 def ideal_body_weight(weight_lbs, height_in, gender):
     """
@@ -37,7 +36,7 @@ def ideal_body_weight(weight_lbs, height_in, gender):
             ibw = (inches_over_sixty * 6) + 106
         elif gender.lower() == 'female':
             ibw = (inches_over_sixty * 5) + 100
-            
+
     elif height_in < 60:
         ibw_in = 60 - height_in
         if gender.lower() == 'male':
@@ -46,8 +45,11 @@ def ideal_body_weight(weight_lbs, height_in, gender):
             ibw = 100 - (ibw_in * (Decimal('2.5')))
     return ibw
 
-def percent_ideal_body_weight(weight_kg, ibw_kg):  
-    return ( Decimal(weight_kg) / Decimal(ibw_kg) ) * Decimal('100.0')
-    
+
+def percent_ideal_body_weight(weight_kg, ibw_kg):
+    return (Decimal(weight_kg) / Decimal(ibw_kg)) * Decimal('100.0')
+
+
 def adjust_body_weight(ibw_kg, weight_kg):
-    return (((Decimal(weight_kg) - Decimal(ibw_kg)) * Decimal('0.25')) + Decimal(ibw_kg))
+    return (((Decimal(weight_kg) - Decimal(ibw_kg)) *
+            Decimal('0.25')) + Decimal(ibw_kg))
