@@ -6,20 +6,23 @@ import calculations as calc
 import output
 
 class NutritionCalc(BoxLayout):
-    #values from the height, weight, age text inputs
+    '''Base nutrition calculator which all future calculators will be based on'''
+    
+    #Initialize all kivy property values that will be shown on the GUI
     height_value, weight_value = ObjectProperty(''), ObjectProperty('')
     height_unit, weight_unit = ObjectProperty('cm'), ObjectProperty('kg')
     age, sex = ObjectProperty(''), ObjectProperty('Male')
 
     def run_calculator(self):
-	d = calc.initial_data(self.height_value, self.height_unit, 
-                        self.weight_value, self.weight_unit, 
-                        self.equation_specific(),
-                        age = int(self.age), sex = self.sex.lower())
-	output.make_popup(d, self.equation_specific())	
-			
+        #Method used to run calculations and display output when Calculate is pressed
+        d = calc.initial_data(self.height_value, self.height_unit, 
+                            self.weight_value, self.weight_unit, 
+                            self.equation_specific_values(),
+                            age = int(self.age), sex = self.sex.lower())
+        output.make_popup(d, self.equation_specific_values())	
+                
     def reset_fields(self):
-        '''Method attached to the reset button to re-initialize all fields'''
+        #Method attached to the reset button to re-initialize all fields
         self.height_value  = self.weight_value = self.age = ''
         self.height_unit   = 'cm'
         self.weight_unit   = 'kg'
@@ -29,19 +32,24 @@ class NutritionCalc(BoxLayout):
 
 
 class MifflinCalc(NutritionCalc):
+    '''Calculator that utilizes Mifflin St Jeor Equation. This equation
+    takes into account stress/activity through the use of a "factor"'''
     stress_factor = ObjectProperty('1.0')
     title_text = 'Mifflin St. Jeor Equation'
     
-    def equation_specific(self):
+    def equation_specific_values(self):
         return [self.title_text, self.stress_factor]
 	
 	
 class PennCalc(NutritionCalc):
+    '''Calculator that uses PennState Equation for intubated patients.
+    It takes into account their max temperature in 24 hours and their
+    ventilation rate'''
     max_temp, ventilation = ObjectProperty(''), ObjectProperty('')
     temp_unit = ObjectProperty('C')
     title_text = 'Penn State Equation'
     
-    def equation_specific(self):
+    def equation_specific_values(self):
         return [self.title_text, self.max_temp, 
                 self.temp_unit, self.ventilation]
 	 

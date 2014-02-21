@@ -3,22 +3,20 @@ import equations.anthropometrics as anthro
 import equations.nutrientneeds as nutcalc
 
 def initial_data(ht_value, ht_unit, wt_value, wt_unit, specific_values, **kwargs):
-    '''Method to compute all necessary information and convert'''
+    '''Converts appropriate data values, stores in dictionary and utilizes them
+    to calculate various data points such as body mass index, ideal body weight,
+    energy needs, etc. Returns a dictionary containing all applicable information.'''
     
-    #sort out kg/lbs, cm/in
     weights_and_heights = conversions(ht_value, ht_unit, 
                                     wt_value, wt_unit)
-    #combine kg/lbs/cm/in dict entries with kwargs dict
     d = kwargs.copy()
     d.update(weights_and_heights)
     
-    #determine, bmi, ibw and %ibw
+    #determine, bmi, ibw, %ibw, and abw if necessary
     d['bmi'] = anthro.body_mass_index( d['kg'], d['cm'] )
     d['ibw_lbs'] = anthro.ideal_body_weight(d['lbs'], d['in'], d['sex'])
     d['ibw_kg'] = convert.to_kilograms(d['ibw_lbs'])
     d['%ibw'] = anthro.percent_ideal_body_weight(d['kg'], d['ibw_kg'])
-	    
-    #if currently more than 125% IBW, we need an adjusted body weight
     if d['%ibw'] >= 125.0:
 	    d['abw'] = anthro.adjust_body_weight( d['ibw_kg'], d['kg'] )
     else:
@@ -28,7 +26,7 @@ def initial_data(ht_value, ht_unit, wt_value, wt_unit, specific_values, **kwargs
     return d
   
 def energy_needs(d, eq_specific_values):
-    #determine energy needs using mifflin
+    #determine base energy needs using mifflin
     needs = nutcalc.mifflin(d['kg'], d['cm'], d['sex'], d['age'])
     
     if 'Penn' in eq_specific_values[0]:
@@ -37,7 +35,7 @@ def energy_needs(d, eq_specific_values):
             tmax = convert.to_celcius(eq_specific_values[1])
         else: 
             tmax = eq_specific_values[1]
-        #then we use the mifflin needs from above, max temp, and ventilation rate
+        #then we use the base needs from above, max temp, and ventilation rate
 	    needs = nutcalc.pennstate(needs, d['bmi'], d['sex'], d['age'], tmax, 
                                 vent_rate=eq_specific_values[3])
     else: #if just using mifflin, we need to add in an activity/stress factor
@@ -59,5 +57,4 @@ def conversions(ht_value, start_ht_unit, wt_value, start_wt_unit):
     elif start_wt_unit == 'lbs': #convert to kilograms
         new_values['lbs'] =convert.to_decimal(wt_value)
         new_values['kg'] = convert.to_kilograms(wt_value)
-
     return new_values

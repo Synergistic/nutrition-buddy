@@ -5,7 +5,6 @@ from kivy.uix.boxlayout import BoxLayout
 
 def make_popup(d, values):
     '''Method to build a pop up for displaying output'''
-
     confirm_button = Button(text = 'Close', size_hint = (1, 0.25))
     popup_content = BoxLayout(orientation = 'vertical')
     popup_content.add_widget(make_output(d))
@@ -17,22 +16,23 @@ def make_popup(d, values):
     pop_window.open()
 
 def make_strings(d, strings, title=''):
-    full_output = [title]
+    '''Takes a list of strings and formats them for proper output display'''
+    full_output_section = [title]
     for i in xrange(len(strings)):
-	if i % 2 == 0:
-	    out = [strings[i].capitalize(), ': {value:.2f}', strings[i+1]]
-	    outtie = ''.join(out).format(value=d[strings[i+1]])
-	    full_output.append(outtie)
-    return '\n'.join(full_output)
+        if i % 2 == 0:
+            line_parts = [strings[i].capitalize(), ': {value:.2f}', strings[i+1]]
+            complete_line = ''.join(line_parts).format(value=d[strings[i+1]])
+            full_output_section.append(complete_line)
+    return '\n'.join(full_output_section)
   
 def make_output(d):
-  
+    '''Creates the widgets to display output data and assembles them into
+    a single layout.'''
     anthro_left = Label(text = make_strings(
       d, ['height', 'cm', 'weight', 'kg'], 'Metric'))
     anthro_right = Label(text = make_strings(
       d, ['height', 'in', 'weight', 'lbs'], 'Imperial'))
-    
-    #Make a boxlayout to hold anthros at the top
+
     inputbox = BoxLayout(orientation = 'horizontal')
     inputbox.add_widget(anthro_left)
     inputbox.add_widget(anthro_right)
@@ -41,18 +41,17 @@ def make_output(d):
 		    'BMI: {bmi:.2f} - {bmi_category}', 
 		    'IBW: {ibw:.2f}kg ({percent_ibw:.2f}%)']
     if d['abw'] == 'N/A':
-	output_text.append('ABW: {abw}')
+        output_text.append('ABW: {abw}')
     else:
-	output_text.append('ABW: {abw:.2f}kg')
+        output_text.append('ABW: {abw:.2f}kg')
 	
-    output_base_d = Label(text= "\n".join(output_text).format( 
+    output_data = Label(text= "\n".join(output_text).format( 
       cal = d['calories'], cal_kg = d['calories']/d['kg'],
       bmi = d['bmi'][0], bmi_category = d['bmi'][1], 
       ibw = d['ibw_kg'], percent_ibw = d['%ibw'], 
       abw = d['abw']))
-
-    #Box layout to organize all input and output d
-    d_layout = BoxLayout(orientation = 'vertical')
-    d_layout.add_widget(inputbox)
-    d_layout.add_widget(output_base_d)
-    return d_layout
+      
+    data_layout = BoxLayout(orientation = 'vertical')
+    data_layout.add_widget(inputbox)
+    data_layout.add_widget(output_data)
+    return data_layout
