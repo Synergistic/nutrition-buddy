@@ -16,7 +16,7 @@ class NutritionCalc(BoxLayout):
 
     def run_calculator(self):
         #run calculations and display output when Calculate button is pressed
-        d = calc.sort_data(self.height_value, self.height_unit,
+        d = calc.initial_data(self.height_value, self.height_unit,
                            self.weight_value, self.weight_unit,
                            self.equation_specific_values(),
                            age=int(self.age), sex=self.sex.lower())
