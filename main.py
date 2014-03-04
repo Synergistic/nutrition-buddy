@@ -61,7 +61,18 @@ class Pages(TabbedPanel):
     welcome_text = "\n".join(['Welcome to Nutrition Buddy',
                               'I calculate things!',
                               'Select a calculator below to get started.'])
-
+    factors = "\n".join(['[b]Stress Factors[/b]',
+			  '    Starvation = 0.7',
+			  '    Surgery = 1.2',
+			  '    Trauma(Severe) = 1.35',
+			  '    Head Injury/Sepsis = 1.6',
+			  '    Burn < 40% TBSA = 1.5',
+			  '    Burn > 40% TBSA = 2.1',
+			  '',
+			  '[b]Activity Factors[/b]',
+			  '    Bed Rest = 1.2',
+			  '    Ambulatory = 1.3',
+			  '    Fever(Per C) = 1.13'])
 
 class NutritionApp(App):
     title = "Nutrition Buddy"
