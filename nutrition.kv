@@ -64,24 +64,6 @@
             font_size: '20sp'
         Label:
         
-        
-<CalcButtons>:
-    orientation: 'horizontal'
-    size_hint: (1, 0.08)
-    Label:
-        size_hint: (0.05, 1)
-                
-    Button:
-        text: 'Calculate'
-        font_size: '24sp'
-        on_release: root.run_calculator()
-    Button:
-        text: 'Reset'
-        font_size: '24sp'
-        on_release: root.reset_fields()
-    Label:
-        size_hint: (0.05, 1)
-        
 <MifflinCalc>:
     BoxLayout:
         orientation: 'horizontal'
@@ -98,7 +80,22 @@
         Label:
     Label:
         size_hint: (1, 0.01)
-    CalcButtons:
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, 0.08)
+        Label:
+            size_hint: (0.05, 1)
+                    
+        Button:
+            text: 'Calculate'
+            font_size: '24sp'
+            on_release: root.run_calculator()
+        Button:
+            text: 'Reset'
+            font_size: '24sp'
+            on_release: root.reset_fields()
+        Label:
+            size_hint: (0.05, 1)
     Label:
         size_hint: (1, 0.01)
         
@@ -135,7 +132,22 @@
         Label:
     Label:
         size_hint: (1, 0.01)
-    CalcButtons:
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, 0.08)
+        Label:
+            size_hint: (0.05, 1)
+                    
+        Button:
+            text: 'Calculate'
+            font_size: '24sp'
+            on_release: root.run_calculator()
+        Button:
+            text: 'Reset'
+            font_size: '24sp'
+            on_release: root.reset_fields()
+        Label:
+            size_hint: (0.05, 1)
     Label:
         size_hint: (1, 0.01)
         

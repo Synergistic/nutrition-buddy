@@ -33,10 +33,10 @@ def make_output(d):
     a single layout.'''
     anthro_left = Label(text=make_strings(
         d, ['height', 'cm', 'weight', 'kg'], '[b]Metric[/b]'), 
-        markup=True, font_size='24sp')
+        markup=True, font_size='18sp')
     anthro_right = Label(text=make_strings(
         d, ['height', 'in', 'weight', 'lbs'], '[b]Imperial[/b]'), 
-        markup=True, font_size='24sp')
+        markup=True, font_size='18sp')
 
     inputbox = BoxLayout(orientation='horizontal')
     inputbox.add_widget(anthro_left)
