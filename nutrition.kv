@@ -1,186 +1,162 @@
 <NutritionCalc>:
-	orientation: 'vertical'
-	Image:
-		source: 'logo.png'
-		size_hint: (1, 0.15)
-	Label:
-		text: root.title_text
-		font_size: '26sp'
-		size_hint: (1, 0.07)
-	BoxLayout:
-		orientation: 'horizontal'
-		size_hint: (1, 0.04)
-		Label:
-			text: 'Height'
-			font_size: '20sp'
-		TextInput:
-			input_type: 'number'
-			text: root.height_value
-			multiline: False
-			font_size: '24sp'
-			on_text: root.height_value = self.text
-		Spinner:
-			text: root.height_unit
-			on_text: root.height_unit = self.text
-			values: ( 'cm', 'in' )
-			font_size: '20sp'		
-			
-	BoxLayout:
-		orientation: 'horizontal'
-		size_hint: (1, 0.04)
-		
-		Label:
-			text: 'Weight'
-			font_size: '20sp'
-		TextInput:
-			text: root.weight_value
-			multiline: False
-			font_size: '24sp'
-			input_type: 'number'
-			on_text: root.weight_value = self.text
-		Spinner:
-			text: root.weight_unit
-			on_text: root.weight_unit = self.text
-			values: ( 'kg', 'lbs' ) 
-			font_size: '20sp'		
-			
-	BoxLayout:
-		orientation: 'horizontal'
-		size_hint: (1, 0.04)
-
-		Label:
-			text: 'Age'
-			font_size: '20sp'
-		TextInput:
-			text: root.age
-			input_type: 'number'
-			multiline: False
-			font_size: '24sp'
-			on_text: root.age = self.text
-		Label:
-  
-	BoxLayout:
-		orientation: 'horizontal'
-		size_hint: (1, 0.04)
-		
-		Label:
-			text: 'Sex'
-			font_size: '20sp'
-		Spinner:
-			text: root.sex
-			values: ( 'Male', 'Female' )
-			on_text: root.sex = self.text
-			font_size: '20sp'
-		Label:
-
-<MifflinCalc>:
-	BoxLayout:
-		orientation: 'horizontal'
-		size_hint: (1, 0.04)
-		Label:
-			text: 'Factor'
-			font_size: '20sp'
-		TextInput:
-			input_type: 'number'
-			text: root.stress_factor
-			multiline: False
-			font_size: '24sp'
-			on_text: root.stress_factor = self.text
-		Label:
-	Label:
-		size_hint: (1, 0.01)
-	BoxLayout:
-		orientation: 'horizontal'
-		size_hint: (1, 0.1)
-		Label:
-			size_hint: (0.03, 1)
-			
-		Button:
-			text: 'Calculate'
-			font_size: '28sp'
-			on_release: root.run_calculator()
-		Button:
-			text: 'Reset'
-			font_size: '28sp'
-			on_release: root.reset_fields()
-		Label:
-			size_hint: (0.03, 1)
-	Label:
-		size_hint: (1, 0.01)
-				
-<PennCalc>:
-	BoxLayout:
-		orientation: 'horizontal'
-		size_hint: (1, 0.04)
-		Label:
-			text: 'Tmax'
-			font_size: '20sp'
-		TextInput:
-			input_type: 'number'
-			text: root.max_temp
-			multiline: False
-			font_size: '24sp'
-			on_text: root.max_temp = self.text
-		Spinner:
-			text: root.temp_unit
-			values: ( 'C', 'F' )
-			on_text: root.temp_unit = self.text
-			font_size: '20sp'		
-	BoxLayout:
-		orientation: 'horizontal'
-		size_hint: (1, 0.04)
-		Label:
-			text: 'Ve'
-			font_size: '20sp'
-		TextInput:
-			input_type: 'number'
-			text: root.ventilation
-			multiline: False
-			font_size: '24sp'
-			on_text: root.ventilation = self.text
-		Label:
-	Label:
-		size_hint: (1, 0.01)
-	BoxLayout:
-		orientation: 'horizontal'
-		size_hint: (1, 0.1)
-		Label:
-			size_hint: (0.03, 1)
-			
-		Button:
-			text: 'Calculate'
-			font_size: '28sp'
-			on_release: root.run_calculator()
-		Button:
-			text: 'Reset'
-			font_size: '28sp'
-			on_release: root.reset_fields()
-		Label:
-			size_hint: (0.03, 1)
-	Label:
-		size_hint: (1, 0.01)
-		
-            
-            
-<Pages>:
-    tab_pos: 'bottom_mid'
-    do_default_tab: False
-    TabbedPanelItem:
-        text: 'Welcome'
+    orientation: 'vertical'
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, 0.03)
         Label:
-            text: root.welcome_text
+            text: 'Height'
+            font_size: '20sp'
+        TextInput:
+            input_type: 'number'
+            text: root.height_value
+            multiline: False
+            font_size: '24sp'
+            on_text: root.height_value = self.text
+        Spinner:
+            text: root.height_unit
+            on_text: root.height_unit = self.text
+            values: ( 'cm', 'in' )
+            font_size: '20sp'
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, 0.04)
+        
+        Label:
+            text: 'Weight'
+            font_size: '20sp'
+        TextInput:
+            text: root.weight_value
+            multiline: False
+            font_size: '24sp'
+            input_type: 'number'
+            on_text: root.weight_value = self.text
+        Spinner:
+            text: root.weight_unit
+            on_text: root.weight_unit = self.text
+            values: ( 'kg', 'lbs' ) 
+            font_size: '20sp'
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, 0.04)
 
-    TabbedPanelItem:
+        Label:
+            text: 'Age'
+            font_size: '20sp'
+        TextInput:
+            text: root.age
+            input_type: 'number'
+            multiline: False
+            font_size: '24sp'
+            on_text: root.age = self.text
+        Label:
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, 0.04)
+            
+        Label:
+            text: 'Sex'
+            font_size: '20sp'
+        Spinner:
+            text: root.sex
+            values: ( 'Male', 'Female' )
+            on_text: root.sex = self.text
+            font_size: '20sp'
+        Label:
+        
+        
+<CalcButtons>:
+    orientation: 'horizontal'
+    size_hint: (1, 0.08)
+    Label:
+        size_hint: (0.05, 1)
+                
+    Button:
+        text: 'Calculate'
+        font_size: '24sp'
+        on_release: root.run_calculator()
+    Button:
+        text: 'Reset'
+        font_size: '24sp'
+        on_release: root.reset_fields()
+    Label:
+        size_hint: (0.05, 1)
+        
+<MifflinCalc>:
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, 0.04)
+        Label:
+            text: 'Factor'
+            font_size: '20sp'
+        TextInput:
+            input_type: 'number'
+            text: root.stress_factor
+            multiline: False
+            font_size: '24sp'
+            on_text: root.stress_factor = self.text
+        Label:
+    Label:
+        size_hint: (1, 0.01)
+    CalcButtons:
+    Label:
+        size_hint: (1, 0.01)
+        
+<PennCalc>:
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, 0.04)
+        Label:
+            text: 'Tmax'
+            font_size: '20sp'
+        TextInput:
+            input_type: 'number'
+            text: root.max_temp
+            multiline: False
+            font_size: '24sp'
+            on_text: root.max_temp = self.text
+        Spinner:
+            text: root.temp_unit
+            values: ( 'C', 'F' )
+            on_text: root.temp_unit = self.text
+            font_size: '20sp'		
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, 0.04)
+        Label:
+            text: 'Ve'
+            font_size: '20sp'
+        TextInput:
+            input_type: 'number'
+            text: root.ventilation
+            multiline: False
+            font_size: '24sp'
+            on_text: root.ventilation = self.text
+        Label:
+    Label:
+        size_hint: (1, 0.01)
+    CalcButtons:
+    Label:
+        size_hint: (1, 0.01)
+        
+<Pages>:
+    orientation: 'vertical'
+
+    AccordionItem:
         id: Mifflin
-        text: 'Mifflin'
+        title: 'Mifflin-St Jeor'
 	    MifflinCalc:
 
-    TabbedPanelItem:
+    AccordionItem:
         id: pennst
-        text: 'PennSt'
+        title: 'Penn State'
 	    PennCalc:
-    TabbedPanelItem:
-        text: 'Factors'
+    AccordionItem:
+        title: 'Reference'
         Label:
             markup: root.factors
             text: root.factors
+    AccordionItem:
+        title: 'Welcome'
+        Label:
+            text: root.welcome_text

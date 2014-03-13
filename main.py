@@ -1,7 +1,7 @@
 from kivy.app import App
 from kivy.properties import ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.tabbedpanel import TabbedPanel
+from kivy.uix.accordion import Accordion
 import calculations as calc
 import output
 
@@ -55,12 +55,12 @@ class PennCalc(NutritionCalc):
                 self.temp_unit, self.ventilation]
 
 
-class Pages(TabbedPanel):
-    '''Base tabbed panels for holding each calculator.
+class Pages(Accordion):
+    '''Base accordion object for holding each calculator.
     Also holds the welcome page'''
     welcome_text = "\n".join(['Welcome to Nutrition Buddy',
                               'I calculate things!',
-                              'Select a calculator below to get started.'])
+                              'Select a calculator above to get started.'])
     factors = "\n".join(['[b]Stress Factors[/b]',
 			  '    Starvation = 0.7',
 			  '    Surgery = 1.2',
@@ -74,6 +74,11 @@ class Pages(TabbedPanel):
 			  '    Ambulatory = 1.3',
 			  '    Fever(Per C) = 1.13'])
 
+
+class CalcButtons(BoxLayout):
+    pass
+  
+  
 class NutritionApp(App):
     title = "Nutrition Buddy"
 
