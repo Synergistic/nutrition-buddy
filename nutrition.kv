@@ -7,52 +7,67 @@
             text: 'Height'
             font_size: '20sp'
         TextInput:
-            input_type: 'number'
             text: root.height_value
-            multiline: False
-            font_size: '24sp'
             on_text: root.height_value = self.text
+            size_hint_y: None
+            input_type: 'number'
+            pos_hint: {'center_y': 0.5}
+            multiline: False
+            font_size: '20sp'
+            height: sp(32)
         Spinner:
             text: root.height_unit
             on_text: root.height_unit = self.text
             values: ( 'cm', 'in' )
             font_size: '20sp'
+            height: sp(32)
+            size_hint_y: None
+            pos_hint: {'center_y': 0.5}
     BoxLayout:
         orientation: 'horizontal'
-        size_hint: (1, 0.04)
+        size_hint: (1, 0.03)
         
         Label:
             text: 'Weight'
             font_size: '20sp'
         TextInput:
             text: root.weight_value
-            multiline: False
-            font_size: '24sp'
-            input_type: 'number'
             on_text: root.weight_value = self.text
+            size_hint_y: None
+            input_type: 'number'
+            pos_hint: {'center_y': 0.5}
+            multiline: False
+            font_size: '20sp'
+            height: sp(32)
         Spinner:
             text: root.weight_unit
             on_text: root.weight_unit = self.text
             values: ( 'kg', 'lbs' ) 
             font_size: '20sp'
+            height: sp(32)
+            size_hint_y: None
+            pos_hint: {'center_y': 0.5}
     BoxLayout:
         orientation: 'horizontal'
-        size_hint: (1, 0.04)
+        size_hint: (1, 0.03)
 
         Label:
             text: 'Age'
             font_size: '20sp'
         TextInput:
             text: root.age
-            input_type: 'number'
-            multiline: False
-            font_size: '24sp'
             on_text: root.age = self.text
+            input_type: 'number'
+            size_hint_y: None
+            pos_hint: {'center_y': 0.5}
+            multiline: False
+            font_size: '20sp'
+            height: sp(32)
         Label:
 
     BoxLayout:
         orientation: 'horizontal'
-        size_hint: (1, 0.04)
+        size_hint: (1, 0.03)
             
         Label:
             text: 'Sex'
@@ -62,27 +77,41 @@
             values: ( 'Male', 'Female' )
             on_text: root.sex = self.text
             font_size: '20sp'
+            height: sp(32)
+            size_hint_y: None
+            pos_hint: {'center_y': 0.5}
         Label:
         
 <MifflinCalc>:
     BoxLayout:
         orientation: 'horizontal'
-        size_hint: (1, 0.04)
+        size_hint: (1, 0.03)
         Label:
-            text: 'Factor'
-            font_size: '20sp'
-        TextInput:
-            input_type: 'number'
+            size_hint: (0.5, None)
+        Spinner:
             text: root.stress_factor
-            multiline: False
-            font_size: '24sp'
             on_text: root.stress_factor = self.text
+            values: root.stress_factors
+            font_size: '16sp'
+            height: sp(32)
+            size_hint: 1, None
+            pos_hint: {'center_y': 0.5}
         Label:
+        Spinner:
+            text: root.activity_factor
+            on_text: root.activity_factor = self.text
+            values: root.activity_factors
+            font_size: '16sp'
+            height: sp(32)
+            size_hint: 1, None
+            pos_hint: {'center_y': 0.5}
+        Label:
+            size_hint: (0.5, None)
     Label:
         size_hint: (1, 0.01)
     BoxLayout:
         orientation: 'horizontal'
-        size_hint: (1, 0.08)
+        size_hint: (1, 0.06)
         Label:
             size_hint: (0.05, 1)
                     
@@ -109,14 +138,20 @@
         TextInput:
             input_type: 'number'
             text: root.max_temp
-            multiline: False
-            font_size: '24sp'
             on_text: root.max_temp = self.text
+            size_hint_y: None
+            pos_hint: {'center_y': 0.5}
+            multiline: False
+            font_size: '20sp'
+            height: sp(32)
         Spinner:
             text: root.temp_unit
             values: ( 'C', 'F' )
             on_text: root.temp_unit = self.text
-            font_size: '20sp'		
+            font_size: '20sp'
+            height: sp(32)
+            size_hint_y: None
+            pos_hint: {'center_y': 0.5}
     BoxLayout:
         orientation: 'horizontal'
         size_hint: (1, 0.04)
@@ -126,15 +161,18 @@
         TextInput:
             input_type: 'number'
             text: root.ventilation
-            multiline: False
-            font_size: '24sp'
             on_text: root.ventilation = self.text
+            size_hint_y: None
+            pos_hint: {'center_y': 0.5}
+            multiline: False
+            font_size: '20sp'
+            height: sp(32)
         Label:
     Label:
         size_hint: (1, 0.01)
     BoxLayout:
         orientation: 'horizontal'
-        size_hint: (1, 0.08)
+        size_hint: (1, 0.06)
         Label:
             size_hint: (0.05, 1)
                     
@@ -158,16 +196,10 @@
         id: Mifflin
         title: 'Mifflin-St Jeor'
 	    MifflinCalc:
-
     AccordionItem:
         id: pennst
         title: 'Penn State'
 	    PennCalc:
-    AccordionItem:
-        title: 'Reference'
-        Label:
-            markup: root.factors
-            text: root.factors
     AccordionItem:
         title: 'Welcome'
         Label:

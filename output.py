@@ -43,6 +43,7 @@ def make_output(d):
     inputbox.add_widget(anthro_right)
 
     output_text = ['Calories: {cal:.1f} ({cal_kg:.0f}kcal/kg)',
+                   'Fluid: {fluid}',
                    'BMI: {bmi:.2f} - {bmi_category}',
                    'IBW: {ibw:.2f}kg ({percent_ibw:.2f}%)']
     if d['abw'] == 'N/A':
@@ -52,6 +53,7 @@ def make_output(d):
 
     output_data = Label(text="\n".join(output_text).format(
         cal=d['calories'], cal_kg=d['calories']/d['kg'],
+        fluid=d['fluid'],
         bmi=d['bmi'][0], bmi_category=d['bmi'][1],
         ibw=d['ibw_kg'], percent_ibw=d['%ibw'],
         abw=d['abw']), font_size='24sp')

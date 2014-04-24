@@ -19,14 +19,16 @@ class NutritionCalc(BoxLayout):
         d = calc.initial_data(self.height_value, self.height_unit,
                            self.weight_value, self.weight_unit,
                            self.equation_specific_values(),
-                           age=int(self.age), sex=self.sex.lower())
-        output.make_popup(d, self.equation_specific_values())
+                           age=self.age, sex=self.sex.lower())
+        if d:
+            output.make_popup(d, self.equation_specific_values())
 
     def reset_fields(self):
         #Method attached to the reset button to re-initialize all fields
         self.height_value = self.weight_value = self.age = ''
         self.max_temp = self.ventilation = ''
-        self.stress_factor = '1.0'
+        self.stress_factor = '1.0 - No stress factor'
+        self.activity_factor = '1.0 - No activity factor'
         self.height_unit = 'cm'
         self.weight_unit = 'kg'
         self.sex = 'Male'
@@ -35,11 +37,24 @@ class NutritionCalc(BoxLayout):
 class MifflinCalc(NutritionCalc):
     '''Calculator that utilizes Mifflin St Jeor Equation. This equation
     takes into account stress/activity through the use of a "factor"'''
-    stress_factor = ObjectProperty('1.0')
+    stress_factor = ObjectProperty('1.0 - No Stress')
+    activity_factor = ObjectProperty('1.0 - No Activity')
     title_text = 'Mifflin St. Jeor Equation'
-
+    activity_factors = ['1.0 - Activity',
+              '1.20 - Bed Rest',
+              '1.30 - Ambulatory']
+    stress_factors = ['0.70 - Starvation',
+              '1.00 - Stress',
+              '1.13 - 1C Fever',
+              '1.20 - Surgery',
+              '1.20 - Bed Rest',
+              '1.35 - Trauma',
+              '1.50 - Burn < 40% TBSA',
+              '1.60 - Head Injury/Sepsis',
+              '2.10 - Burn > 40% TBSA']
+              
     def equation_specific_values(self):
-        return [self.title_text, self.stress_factor]
+        return [self.title_text, self.stress_factor[:3], self.activity_factor[:3]]
 
 
 class PennCalc(NutritionCalc):
@@ -49,7 +64,7 @@ class PennCalc(NutritionCalc):
     max_temp, ventilation = ObjectProperty(''), ObjectProperty('')
     temp_unit = ObjectProperty('C')
     title_text = 'Penn State Equation'
-
+    
     def equation_specific_values(self):
         return [self.title_text, self.max_temp,
                 self.temp_unit, self.ventilation]
@@ -61,18 +76,6 @@ class Pages(Accordion):
     welcome_text = "\n".join(['Welcome to Nutrition Buddy',
                               'I calculate things!',
                               'Select a calculator above to get started.'])
-    factors = "\n".join(['[b]Stress Factors[/b]',
-			  '    Starvation = 0.7',
-			  '    Surgery = 1.2',
-			  '    Trauma(Severe) = 1.35',
-			  '    Head Injury/Sepsis = 1.6',
-			  '    Burn < 40% TBSA = 1.5',
-			  '    Burn > 40% TBSA = 2.1',
-			  '',
-			  '[b]Activity Factors[/b]',
-			  '    Bed Rest = 1.2',
-			  '    Ambulatory = 1.3',
-			  '    Fever(Per C) = 1.13'])
 
 
 class CalcButtons(BoxLayout):

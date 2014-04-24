@@ -50,9 +50,9 @@ def fluid(weight_kg, age):
     '''Calculates daily fluid needs
     75 years old and above = 25cc/kg
     Under 75 years = 30cc/kg'''
-    if age >= 75:
+    if age >= 65:
         daily_fluid = weight_kg * 25
-    elif age < 75:
+    elif age < 65:
         daily_fluid = weight_kg * 30
     return daily_fluid
 
