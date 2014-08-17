@@ -67,6 +67,7 @@
                     text: '0'
                     id: inputHeight
                     on_text: convertedHeight.text = root.ConvertMeasure('height', self.text)
+                    input_type: 'number'
                 Button:
                     text: "Inches >> Centimeters"
                     on_press: root.SetButtonText(self)
@@ -99,6 +100,7 @@
                     text: 'Weight'
                 TextInput:
                     id: weightInput
+                    input_type: 'number'
                 Spinner:
                     id: weightUnit
                     text: 'kg'
@@ -109,6 +111,7 @@
                     text: 'Height'
                 TextInput:
                     id: heightInput
+                    input_type: 'number'
                 Spinner:
                     id: heightUnit
                     text: 'cm'
@@ -119,6 +122,7 @@
                     text: 'Age'
                 TextInput:
                     id: ageInput
+                    input_type: 'number'
                     
             BoxLayout:
                 Label:
