@@ -6,19 +6,6 @@ from Measures import Height, Weight, Age, Gender
 from Calculator import NutritionCalculator
 
 
-
-#myHeight = Height(64, False)
-
-#myIBW = Weight(calculator.IdealBodyWeight(), False)
-#percentIBW = calculator.PercentIdealBodyWeight(myIBW)
-#if percentIBW > 125.0:
-    #abw = Weight(calculator.AdjustedBodyWeight(myIBW), True)
-
-#print "IBW: {0:.2f}".format(myIBW.ConvertToMetric())
-#print "%IBW: {0:.2f}".format(percentIBW)
-#if abw:
-    #print "ABW: " + str(abw)
-
 class EnergyNeedsScreen(Screen):
     pass
 
@@ -51,17 +38,17 @@ class ConversionScreen(Screen):
             self.weightIsMetric = not self.weightIsMetric
             
             if self.weightIsMetric:
-                buttonToChange.text = 'Kilograms >> Pounds'
+                buttonToChange.text = 'Kilograms \n    >>\nPounds'
             else:
-                buttonToChange.text = 'Pounds >> Kilograms'
+                buttonToChange.text = 'Pounds \n   >>\nKilograms'
             
         if buttonToChange.text[0] == 'C' or buttonToChange.text[0] == 'I':
             self.heightIsMetric = not self.heightIsMetric
             
             if self.heightIsMetric:
-                buttonToChange.text = 'Centimeters >> Inches'
+                buttonToChange.text = 'Centimeters \n    >>\nInches'
             else:
-                buttonToChange.text = 'Inches >> Centimeters'   
+                buttonToChange.text = 'Inches \n   >>\nCentimeters'   
 
 
 class MifflinStJeorScreen(Screen):
@@ -89,9 +76,14 @@ class MifflinStJeorScreen(Screen):
         
         print str(weight), str(height), str(gender), str(age)
        
-        return "\n".join([self.CalculateEnergyNeeds(weight.ConvertToMetric(), height.ConvertToMetric(), age.value, gender),
-                          self.CalculateBMI(weight.ConvertToMetric(), height.ConvertToMetric()),
-                          self.CalculateIdealWeight(weight, height.ConvertToImperial(), gender)])
+        return "\n".join([self.CalculateEnergyNeeds(weight.ConvertToMetric(), 
+                                                    height.ConvertToMetric(), 
+                                                    age.value, gender),
+                          self.CalculateBMI(weight.ConvertToMetric(), 
+                                            height.ConvertToMetric()),
+                          self.CalculateIdealWeight(weight, 
+                                                    height.ConvertToImperial(), 
+                                                    gender)])
     
     def CalculateBMI(self, weight, height):
         bmi = NutritionCalculator().BodyMassIndex(weight, height)
@@ -99,9 +91,12 @@ class MifflinStJeorScreen(Screen):
         return "{0:.2f} - {1}".format(bmi, bmiCategory)
     
     def CalculateEnergyNeeds(self, weight, height, age, gender):  
-        energyNeeds = NutritionCalculator().MifflinStJeor(weight, height, age, gender)
-        caloriesPerKilogram = NutritionCalculator().CaloriesPerKilogram(energyNeeds, weight)
-        return "\n{0:.0f} Calories ({1:.0f}cal/kg)".format(energyNeeds, caloriesPerKilogram)
+        energyNeeds = NutritionCalculator().MifflinStJeor(weight, height, 
+                                                          age, gender)
+        caloriesPerKilogram = NutritionCalculator().CaloriesPerKilogram(energyNeeds, 
+                                                                        weight)
+        return "\n\n{0:.0f} Calories ({1:.0f}cal/kg)".format(energyNeeds, 
+                                                           caloriesPerKilogram)
     
     def CalculateIdealWeight(self, weight, height, gender):
         idealWeight = Weight(NutritionCalculator().IdealBodyWeight(height, gender), False)
