@@ -4,7 +4,7 @@
         anchor_x: 'center'
         anchor_y: 'top'
         BoxLayout:
-            size_hint: (0.75, 0.5)
+            size_hint: (0.85, 0.5)
             orientation: 'vertical'
             Label:
                 text: 'Welcome to Nutrition Buddy\nSelect a calculator to get started.'
@@ -17,9 +17,9 @@
                     on_press: root.manager.current = 'Mifflin'
     AnchorLayout:
         anchor_x: 'left'
-        anchor_y: 'top'
+        anchor_y: 'bottom'
         Button:
-            size_hint: (0.25, 0.1)
+            size_hint: (0.15, 0.1)
             text: 'Quit'
         
 <EnergyNeedsScreen>:
@@ -91,7 +91,7 @@
         anchor_y: 'top'
         
         BoxLayout:
-            size_hint: (0.75, 0.75)
+            size_hint: (1, 0.75)
             orientation: 'vertical'
             Label:
                 text: 'Mifflin-St.Jeor Equation'
@@ -101,6 +101,7 @@
                 TextInput:
                     id: weightInput
                     input_type: 'number'
+                    text: ''
                 Spinner:
                     id: weightUnit
                     text: 'kg'
