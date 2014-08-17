@@ -1,10 +1,13 @@
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.popup import Popup
 from kivy.properties import StringProperty
 
 from Measures import Height, Weight, Age, Gender
 from Calculator import NutritionCalculator
 
+class FactorPopup(Popup):
+    pass
 
 class EnergyNeedsScreen(Screen):
     pass
@@ -115,6 +118,9 @@ class MifflinStJeorScreen(Screen):
         return "{0:.2f}kg or {1:.2f}lbs ({2:.2f}%)\nN/A".format(idealWeight.ConvertToMetric(), 
                                                            idealWeight.ConvertToImperial(),
                                                            percentIdeal)
+    
+    def openFactorPopup(self, mifflinValue):
+        print mifflinValue
     
 
     
