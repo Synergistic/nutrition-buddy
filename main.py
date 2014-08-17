@@ -1,92 +1,138 @@
 from kivy.app import App
-from kivy.properties import ObjectProperty
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.accordion import Accordion
-import calculations as calc
-import output
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.properties import StringProperty
+
+from Measures import Height, Weight, Age, Gender
+from Calculator import NutritionCalculator
 
 
-class NutritionCalc(BoxLayout):
-    '''Base calculator which other calculators will be based on'''
 
-    #Initialize all kivy property values that will be shown on the GUI
-    height_value, weight_value = ObjectProperty(''), ObjectProperty('')
-    height_unit, weight_unit = ObjectProperty('cm'), ObjectProperty('kg')
-    age, sex = ObjectProperty(''), ObjectProperty('Male')
+#myHeight = Height(64, False)
 
-    def run_calculator(self):
-        #run calculations and display output when Calculate button is pressed
-        d = calc.initial_data(self.height_value, self.height_unit,
-                           self.weight_value, self.weight_unit,
-                           self.equation_specific_values(),
-                           age=self.age, sex=self.sex.lower())
-        if d:
-            output.make_popup(d, self.equation_specific_values())
+#myIBW = Weight(calculator.IdealBodyWeight(), False)
+#percentIBW = calculator.PercentIdealBodyWeight(myIBW)
+#if percentIBW > 125.0:
+    #abw = Weight(calculator.AdjustedBodyWeight(myIBW), True)
 
-    def reset_fields(self):
-        #Method attached to the reset button to re-initialize all fields
-        self.height_value = self.weight_value = self.age = ''
-        self.max_temp = self.ventilation = ''
-        self.stress_factor = '1.0 - No stress factor'
-        self.activity_factor = '1.0 - No activity factor'
-        self.height_unit = 'cm'
-        self.weight_unit = 'kg'
-        self.sex = 'Male'
+#print "IBW: {0:.2f}".format(myIBW.ConvertToMetric())
+#print "%IBW: {0:.2f}".format(percentIBW)
+#if abw:
+    #print "ABW: " + str(abw)
 
-
-class MifflinCalc(NutritionCalc):
-    '''Calculator that utilizes Mifflin St Jeor Equation. This equation
-    takes into account stress/activity through the use of a "factor"'''
-    stress_factor = ObjectProperty('1.0 - No Stress')
-    activity_factor = ObjectProperty('1.0 - No Activity')
-    title_text = 'Mifflin St. Jeor Equation'
-    activity_factors = ['1.0 - Activity',
-              '1.20 - Bed Rest',
-              '1.30 - Ambulatory']
-    stress_factors = ['0.70 - Starvation',
-              '1.00 - Stress',
-              '1.13 - 1C Fever',
-              '1.20 - Surgery',
-              '1.20 - Bed Rest',
-              '1.35 - Trauma',
-              '1.50 - Burn < 40% TBSA',
-              '1.60 - Head Injury/Sepsis',
-              '2.10 - Burn > 40% TBSA']
-              
-    def equation_specific_values(self):
-        return [self.title_text, self.stress_factor[:3], self.activity_factor[:3]]
-
-
-class PennCalc(NutritionCalc):
-    '''Calculator that uses PennState Equation for intubated patients.
-    It takes into account their max temperature in 24 hours and their
-    ventilation rate'''
-    max_temp, ventilation = ObjectProperty(''), ObjectProperty('')
-    temp_unit = ObjectProperty('C')
-    title_text = 'Penn State Equation'
-    
-    def equation_specific_values(self):
-        return [self.title_text, self.max_temp,
-                self.temp_unit, self.ventilation]
-
-
-class Pages(Accordion):
-    '''Base accordion object for holding each calculator.
-    Also holds the welcome page'''
-    welcome_text = "\n".join(['Welcome to Nutrition Buddy',
-                              'I calculate things!',
-                              'Select a calculator above to get started.'])
-
-
-class CalcButtons(BoxLayout):
+class EnergyNeedsScreen(Screen):
     pass
-  
-  
+
+class WelcomeScreen(Screen):
+    pass
+
+class ConversionScreen(Screen):
+    
+    weightIsMetric = False
+    heightIsMetric = False
+    
+    def ConvertMeasure(self, typeOfMeasure, measureToConvert):
+        if measureToConvert.isdigit():
+            
+            if typeOfMeasure == 'weight':
+                measure = Weight(measureToConvert, self.weightIsMetric)
+                isMetric = self.weightIsMetric
+            else:
+                measure = Height(measureToConvert, self.heightIsMetric)
+                isMetric = self.heightIsMetric
+                
+            if isMetric:
+                return '{0:.2f}'.format(measure.ConvertToImperial())
+            else:
+                return '{0:.2f}'.format(measure.ConvertToMetric())
+        return ''            
+
+    def SetButtonText(self, buttonToChange):
+        if buttonToChange.text[0] == 'K' or buttonToChange.text[0] == 'P':
+            self.weightIsMetric = not self.weightIsMetric
+            
+            if self.weightIsMetric:
+                buttonToChange.text = 'Kilograms >> Pounds'
+            else:
+                buttonToChange.text = 'Pounds >> Kilograms'
+            
+        if buttonToChange.text[0] == 'C' or buttonToChange.text[0] == 'I':
+            self.heightIsMetric = not self.heightIsMetric
+            
+            if self.heightIsMetric:
+                buttonToChange.text = 'Centimeters >> Inches'
+            else:
+                buttonToChange.text = 'Inches >> Centimeters'   
+
+
+class MifflinStJeorScreen(Screen):
+    
+    def Calculations(self, measures):
+        for value in measures.itervalues():
+            if not value.isalnum():
+                return "Unable to process, check fields."
+            
+        if measures['wtUnit'] == 'kg':
+            weight = Weight(measures['wtValue'], True)
+        else:
+            weight = Weight(measures['wtValue'], False)
+        
+        if measures['htUnit'] == 'cm':
+            height = Height(measures['htValue'], True)
+        else:
+            height = Height(measures['htValue'], False)     
+        
+        if measures['gender'][0] == 'M':
+             gender = Gender(True)
+        else:
+             gender = Gender(False)
+        age = Age(measures['age'])
+        
+        print str(weight), str(height), str(gender), str(age)
+       
+        return "\n".join([self.CalculateEnergyNeeds(weight.ConvertToMetric(), height.ConvertToMetric(), age.value, gender),
+                          self.CalculateBMI(weight.ConvertToMetric(), height.ConvertToMetric()),
+                          self.CalculateIdealWeight(weight, height.ConvertToImperial(), gender)])
+    
+    def CalculateBMI(self, weight, height):
+        bmi = NutritionCalculator().BodyMassIndex(weight, height)
+        bmiCategory = NutritionCalculator().BmiCategory(bmi)
+        return "{0:.2f} - {1}".format(bmi, bmiCategory)
+    
+    def CalculateEnergyNeeds(self, weight, height, age, gender):  
+        energyNeeds = NutritionCalculator().MifflinStJeor(weight, height, age, gender)
+        caloriesPerKilogram = NutritionCalculator().CaloriesPerKilogram(energyNeeds, weight)
+        return "\n{0:.0f} Calories ({1:.0f}cal/kg)".format(energyNeeds, caloriesPerKilogram)
+    
+    def CalculateIdealWeight(self, weight, height, gender):
+        idealWeight = Weight(NutritionCalculator().IdealBodyWeight(height, gender), False)
+        percentIdeal = NutritionCalculator().PercentIdealBodyWeight(weight.ConvertToMetric(), 
+                                                                    idealWeight.ConvertToMetric())
+        if percentIdeal > 125.0:
+            adjustedWeight = Weight(NutritionCalculator().AdjustedBodyWeight(weight.ConvertToMetric(), 
+                                                                             idealWeight.ConvertToMetric()), 
+                                                                             True)
+            return "{0:.2f}kg or {1:.2f}lbs ({2:.2f}%)\n{3:.2f}kg or {4:.2f}lbs".format(idealWeight.ConvertToMetric(), 
+                                                                                        idealWeight.ConvertToImperial(), 
+                                                                                        percentIdeal,
+                                                                                        adjustedWeight.ConvertToMetric(), 
+                                                                                        adjustedWeight.ConvertToImperial())
+        
+        return "{0:.2f}kg or {1:.2f}lbs ({2:.2f}%)\nN/A".format(idealWeight.ConvertToMetric(), 
+                                                           idealWeight.ConvertToImperial(),
+                                                           percentIdeal)
+    
+
+    
 class NutritionApp(App):
     title = "Nutrition Buddy"
 
     def build(self):
-        return Pages()
+        calculatorScreenManager = ScreenManager()
+        calculatorScreenManager.add_widget(WelcomeScreen(name="Welcome"))
+        calculatorScreenManager.add_widget(ConversionScreen(name="Conversions"))
+        calculatorScreenManager.add_widget(EnergyNeedsScreen(name="EnergyNeeds"))
+        calculatorScreenManager.add_widget(MifflinStJeorScreen(name="Mifflin"))
+        return calculatorScreenManager
 
     def on_pause(self):
         return True

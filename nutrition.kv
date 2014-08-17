@@ -1,206 +1,157 @@
-<NutritionCalc>:
-    orientation: 'vertical'
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: (1, 0.03)
-        Label:
-            text: 'Height'
-            font_size: '20sp'
-        TextInput:
-            text: root.height_value
-            on_text: root.height_value = self.text
-            size_hint_y: None
-            input_type: 'number'
-            pos_hint: {'center_y': 0.5}
-            multiline: False
-            font_size: '20sp'
-            height: sp(32)
-        Spinner:
-            text: root.height_unit
-            on_text: root.height_unit = self.text
-            values: ( 'cm', 'in' )
-            font_size: '20sp'
-            height: sp(32)
-            size_hint_y: None
-            pos_hint: {'center_y': 0.5}
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: (1, 0.03)
+<WelcomeScreen>:
+    name: 'welcome'
+    AnchorLayout:
+        anchor_x: 'center'
+        anchor_y: 'top'
+        BoxLayout:
+            size_hint: (0.75, 0.5)
+            orientation: 'vertical'
+            Label:
+                text: 'Welcome to Nutrition Buddy\nSelect a calculator to get started.'
+            BoxLayout:
+                Button:
+                    text: "Conversions"
+                    on_press: root.manager.current = 'conversion'
+                Button:
+                    text: "Mifflin-St.Jeor"
+                    on_press: root.manager.current = 'Mifflin'
+    AnchorLayout:
+        anchor_x: 'left'
+        anchor_y: 'top'
+        Button:
+            size_hint: (0.25, 0.1)
+            text: 'Quit'
         
-        Label:
-            text: 'Weight'
-            font_size: '20sp'
-        TextInput:
-            text: root.weight_value
-            on_text: root.weight_value = self.text
-            size_hint_y: None
-            input_type: 'number'
-            pos_hint: {'center_y': 0.5}
-            multiline: False
-            font_size: '20sp'
-            height: sp(32)
-        Spinner:
-            text: root.weight_unit
-            on_text: root.weight_unit = self.text
-            values: ( 'kg', 'lbs' ) 
-            font_size: '20sp'
-            height: sp(32)
-            size_hint_y: None
-            pos_hint: {'center_y': 0.5}
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: (1, 0.03)
-
-        Label:
-            text: 'Age'
-            font_size: '20sp'
-        TextInput:
-            text: root.age
-            on_text: root.age = self.text
-            input_type: 'number'
-            size_hint_y: None
-            pos_hint: {'center_y': 0.5}
-            multiline: False
-            font_size: '20sp'
-            height: sp(32)
-        Label:
-
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: (1, 0.03)
+<EnergyNeedsScreen>:
+    AnchorLayout:
+        anchor_x: 'center'
+        anchor_y: 'center'
+        BoxLayout:
+            size_hint: (0.5, 0.5)
+            Button:
+                text: "Mifflin-St.Jeor"
+                on_press: root.manager.current = 'Mifflin'
+            Button:
+                text: "Coming Soon"
             
-        Label:
-            text: 'Sex'
-            font_size: '20sp'
-        Spinner:
-            text: root.sex
-            values: ( 'Male', 'Female' )
-            on_text: root.sex = self.text
-            font_size: '20sp'
-            height: sp(32)
-            size_hint_y: None
-            pos_hint: {'center_y': 0.5}
-        Label:
-        
-<MifflinCalc>:
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: (1, 0.03)
-        Label:
-            size_hint: (0.5, None)
-        Spinner:
-            text: root.stress_factor
-            on_text: root.stress_factor = self.text
-            values: root.stress_factors
-            font_size: '16sp'
-            height: sp(32)
-            size_hint: 1, None
-            pos_hint: {'center_y': 0.5}
-        Label:
-        Spinner:
-            text: root.activity_factor
-            on_text: root.activity_factor = self.text
-            values: root.activity_factors
-            font_size: '16sp'
-            height: sp(32)
-            size_hint: 1, None
-            pos_hint: {'center_y': 0.5}
-        Label:
-            size_hint: (0.5, None)
-    Label:
-        size_hint: (1, 0.01)
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: (1, 0.06)
-        Label:
-            size_hint: (0.05, 1)
-                    
-        Button:
-            text: 'Calculate'
-            font_size: '24sp'
-            on_release: root.run_calculator()
-        Button:
-            text: 'Reset'
-            font_size: '24sp'
-            on_release: root.reset_fields()
-        Label:
-            size_hint: (0.05, 1)
-    Label:
-        size_hint: (1, 0.01)
-        
-<PennCalc>:
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: (1, 0.04)
-        Label:
-            text: 'Tmax'
-            font_size: '20sp'
-        TextInput:
-            input_type: 'number'
-            text: root.max_temp
-            on_text: root.max_temp = self.text
-            size_hint_y: None
-            pos_hint: {'center_y': 0.5}
-            multiline: False
-            font_size: '20sp'
-            height: sp(32)
-        Spinner:
-            text: root.temp_unit
-            values: ( 'C', 'F' )
-            on_text: root.temp_unit = self.text
-            font_size: '20sp'
-            height: sp(32)
-            size_hint_y: None
-            pos_hint: {'center_y': 0.5}
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: (1, 0.04)
-        Label:
-            text: 'Ve'
-            font_size: '20sp'
-        TextInput:
-            input_type: 'number'
-            text: root.ventilation
-            on_text: root.ventilation = self.text
-            size_hint_y: None
-            pos_hint: {'center_y': 0.5}
-            multiline: False
-            font_size: '20sp'
-            height: sp(32)
-        Label:
-    Label:
-        size_hint: (1, 0.01)
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: (1, 0.06)
-        Label:
-            size_hint: (0.05, 1)
-                    
-        Button:
-            text: 'Calculate'
-            font_size: '24sp'
-            on_release: root.run_calculator()
-        Button:
-            text: 'Reset'
-            font_size: '24sp'
-            on_release: root.reset_fields()
-        Label:
-            size_hint: (0.05, 1)
-    Label:
-        size_hint: (1, 0.01)
-        
-<Pages>:
-    orientation: 'vertical'
 
-    AccordionItem:
-        id: Mifflin
-        title: 'Mifflin-St Jeor'
-	    MifflinCalc:
-    AccordionItem:
-        id: pennst
-        title: 'Penn State'
-	    PennCalc:
-    AccordionItem:
-        title: 'Welcome'
-        Label:
-            text: root.welcome_text
+<ConversionScreen>:
+    name: 'conversion'
+    AnchorLayout:
+        anchor_x: 'center'
+        anchor_y: 'top'
+        BoxLayout:
+            size_hint: (0.75, 0.75)
+            orientation: 'vertical'
+            
+            Label:
+                text: "Conversion Calculator"
+                
+            BoxLayout:
+                TextInput:
+                    multiline: False
+                    text: '0'
+                    id: inputWeight
+                    on_text: convertedWeight.text = root.ConvertMeasure('weight', self.text)
+                Button:
+                    text: "Pounds >> Kilograms"
+                    on_press: root.SetButtonText(self)
+                    on_release: convertedWeight.text = root.ConvertMeasure('weight', inputWeight.text)
+                TextInput:
+                    id: convertedWeight
+                    disabled: True
+                    
+            BoxLayout:
+                TextInput:
+                    multiline: False
+                    text: '0'
+                    id: inputHeight
+                    on_text: convertedHeight.text = root.ConvertMeasure('height', self.text)
+                Button:
+                    text: "Inches >> Centimeters"
+                    on_press: root.SetButtonText(self)
+                    on_release: convertedHeight.text = root.ConvertMeasure('height', inputHeight.text)
+                TextInput:
+                    id: convertedHeight
+                    disabled: True
+            Label:
+                
+    AnchorLayout:
+        anchor_x: 'center'
+        anchor_y: 'bottom'
+        Button:
+            size_hint: (0.75, 0.1)
+            text: 'Return to Menu'
+            on_press: root.manager.current = 'welcome'
+                
+<MifflinStJeorScreen>
+    AnchorLayout:
+        anchor_x: 'center'
+        anchor_y: 'top'
+        
+        BoxLayout:
+            size_hint: (0.75, 0.75)
+            orientation: 'vertical'
+            Label:
+                text: 'Mifflin-St.Jeor Equation'
+            BoxLayout:
+                Label:
+                    text: 'Weight'
+                TextInput:
+                    id: weightInput
+                Spinner:
+                    id: weightUnit
+                    text: 'kg'
+                    values: ('kg', 'lbs')
+                    
+            BoxLayout:
+                Label:
+                    text: 'Height'
+                TextInput:
+                    id: heightInput
+                Spinner:
+                    id: heightUnit
+                    text: 'cm'
+                    values: ('cm', 'in')
+                    
+            BoxLayout:
+                Label:
+                    text: 'Age'
+                TextInput:
+                    id: ageInput
+                    
+            BoxLayout:
+                Label:
+                    text: 'Gender'
+                Spinner:
+                    id: gender
+                    text: 'Female'
+                    values: ('Male', 'Female')
+            BoxLayout:            
+                Button:
+                    text: 'Calculate'
+                    on_press: outputLabel.text = root.Calculations({'wtValue': weightInput.text, 'wtUnit': weightUnit.text, 'htValue': heightInput.text, 'htUnit': heightUnit.text, 'age': ageInput.text, 'gender': gender.text})
+                Button:
+                    text: 'Clear Fields'
+                    on_release: weightInput.text, heightInput.text, ageInput.text = '', '', ''
+                
+            BoxLayout:
+                
+                Label:
+                    text: '\nEnergy:\nBMI:\nIBW:\nABW:'
+            
+                Label:
+                    text: ' '
+                    id: outputLabel
+                
+                    
+
+    AnchorLayout:
+        anchor_x: 'center'
+        anchor_y: 'bottom'
+        BoxLayout:
+            size_hint: (0.75, 0.065)
+            Button:
+                text: 'Main Menu'
+                on_press: root.manager.current = 'welcome'
+            
