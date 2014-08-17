@@ -16,6 +16,20 @@
                     text: "Mifflin-St.Jeor"
                     on_press: root.manager.current = 'Mifflin'
 
+        
+<EnergyNeedsScreen>:
+    AnchorLayout:
+        anchor_x: 'center'
+        anchor_y: 'center'
+        BoxLayout:
+            size_hint: (0.5, 0.5)
+            Button:
+                text: "Mifflin-St.Jeor"
+                on_press: root.manager.current = 'Mifflin'
+            Button:
+                text: "Coming Soon"
+            
+
 <ConversionScreen>:
     name: 'conversion'
     AnchorLayout:
@@ -142,18 +156,14 @@
                     text: 'Female'
                     values: ('Male', 'Female')
                     font_size: '24dp'
-                    size_hint_y: None
-                    height: heightUnit.height
             BoxLayout:       
                 Button:
                     text: 'Calculate'
                     font_size: '24dp'
                     on_press: outputLabel.text = root.Calculations({'wtValue': weightInput.text.strip(), 'wtUnit': weightUnit.text, 'htValue': heightInput.text.strip(), 'htUnit': heightUnit.text, 'age': ageInput.text.strip(), 'gender': gender.text})
-                    on_release: ageInput.focus, weightInput.focus, heightInput.focus = False, False, False
                 Button:
                     text: 'Clear Fields'
                     font_size: '24dp'
-                    on_press: ageInput.focus, weightInput.focus, heightInput.focus = False, False, False
                     on_release: weightInput.text, heightInput.text, ageInput.text = '', '', ''
                 
             BoxLayout:
@@ -166,26 +176,16 @@
                     text: ' '
                     font_size: '24dp'
                     id: outputLabel
+
+                
+                    
+
     AnchorLayout:
         anchor_x: 'center'
         anchor_y: 'bottom'
         BoxLayout:
-	    size_hint_y: 0.065
-	    Button:
-		text: "Add Factor(s)"
-		on_press: root.openFactorPopup(outputLabel.partition('\n')[0])
-	    Button:
-		text: 'Quit'
-
-
-       
-<FactorPopup>
-    BoxLayout:
-        Label:
-	    text: 'Mifflin Value:'
-	Spinner:
-	    text: '1.0 - No Activity'
-	Spinner:
-    	    text: '1.0 - No Stress'
-
-
+            size_hint: (0.75, 0.065)
+            Button:
+                text: 'Main Menu'
+                on_press: root.manager.current = 'welcome'
+            
