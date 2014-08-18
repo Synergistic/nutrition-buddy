@@ -5,6 +5,7 @@ from kivy.properties import StringProperty
 
 from Measures import Height, Weight, Age, Gender
 from Calculator import NutritionCalculator
+import re
 
 class FactorPopup(Popup):
     mifflinValue = StringProperty('')
@@ -24,15 +25,13 @@ class FactorPopup(Popup):
     def __init__(self, mifflinValue):
         super(FactorPopup, self).__init__()
         self.mifflinValue = mifflinValue
+        self.updatedMifflin = self.mifflinValue
 
     def updateFactors(self, activityFactor, stressFactor):
         tempMifflin = NutritionCalculator().MifflinFactor(self.mifflinValue, activityFactor)
         tempMifflin = NutritionCalculator().MifflinFactor(tempMifflin, stressFactor)
         return 'Needs + Factor(s): ' + str(tempMifflin)
         
-class EnergyNeedsScreen(Screen):
-    pass
-
 class WelcomeScreen(Screen):
     pass
 
@@ -42,7 +41,8 @@ class ConversionScreen(Screen):
     heightIsMetric = False
     
     def ConvertMeasure(self, typeOfMeasure, measureToConvert):
-        if measureToConvert.isdigit():
+    	decimalCheck = re.compile('\d+(\.\d+)?')
+        if decimalCheck.match(measureToConvert) != None:
             
             if typeOfMeasure == 'weight':
                 measure = Weight(measureToConvert, self.weightIsMetric)
@@ -78,8 +78,11 @@ class ConversionScreen(Screen):
 class MifflinStJeorScreen(Screen):
     
     def Calculations(self, measures):
-        if not measures['wtValue'].isdigit() or not measures['htValue'].isdigit() \
-           or not measures['age'].isdigit():
+    
+    	decimalCheck = re.compile('\d+(\.\d+)?')
+    	if decimalCheck.match(measures['wtValue']) == None or \
+    	    decimalCheck.match(measures['htValue']) == None or \
+    	    decimalCheck.match(measures['age']) == None:
             return "Unable to process, check entered values."
             
         if measures['wtUnit'] == 'kg':
@@ -92,7 +95,7 @@ class MifflinStJeorScreen(Screen):
         else:
             height = Height(measures['htValue'], False)     
         
-        if measures['gender'][0] == 'M':
+        if measures['gender'] == 'down':
              gender = Gender(True)
         else:
              gender = Gender(False)
@@ -153,7 +156,6 @@ class NutritionApp(App):
         calculatorScreenManager = ScreenManager()
         calculatorScreenManager.add_widget(WelcomeScreen(name="Welcome"))
         calculatorScreenManager.add_widget(ConversionScreen(name="Conversions"))
-        calculatorScreenManager.add_widget(EnergyNeedsScreen(name="EnergyNeeds"))
         calculatorScreenManager.add_widget(MifflinStJeorScreen(name="Mifflin"))
         return calculatorScreenManager
 
