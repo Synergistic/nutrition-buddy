@@ -1,11 +1,35 @@
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.popup import Popup
 from kivy.properties import StringProperty
 
 from Measures import Height, Weight, Age, Gender
 from Calculator import NutritionCalculator
 
+class FactorPopup(Popup):
+    mifflinValue = StringProperty('')
+    updatedMifflin = StringProperty('')
+    activityValues = ['1.0 - No Activity',
+              '1.20 - Bed Rest',
+              '1.30 - Ambulatory']
+    stressValues = ['0.70 - Starvation',
+              '1.00 - No Stress',
+              '1.13 - 1C Fever',
+              '1.20 - Surgery',
+              '1.20 - Bed Rest',
+              '1.35 - Trauma',
+              '1.50 - Burn < 40% TBSA',
+              '1.60 - Head Injury/Sepsis',
+              '2.10 - Burn > 40% TBSA']    
+    def __init__(self, mifflinValue):
+        super(FactorPopup, self).__init__()
+        self.mifflinValue = mifflinValue
 
+    def updateFactors(self, activityFactor, stressFactor):
+        tempMifflin = NutritionCalculator().MifflinFactor(self.mifflinValue, activityFactor)
+        tempMifflin = NutritionCalculator().MifflinFactor(tempMifflin, stressFactor)
+        return 'Needs + Factor(s): ' + str(tempMifflin)
+        
 class EnergyNeedsScreen(Screen):
     pass
 
@@ -54,9 +78,9 @@ class ConversionScreen(Screen):
 class MifflinStJeorScreen(Screen):
     
     def Calculations(self, measures):
-        for value in measures.itervalues():
-            if not value.isalnum():
-                return "Unable to process, check fields."
+        if not measures['wtValue'].isdigit() or not measures['htValue'].isdigit() \
+           or not measures['age'].isdigit():
+            return "Unable to process, check entered values."
             
         if measures['wtUnit'] == 'kg':
             weight = Weight(measures['wtValue'], True)
@@ -115,7 +139,11 @@ class MifflinStJeorScreen(Screen):
         return "{0:.2f}kg or {1:.2f}lbs ({2:.2f}%)\nN/A".format(idealWeight.ConvertToMetric(), 
                                                            idealWeight.ConvertToImperial(),
                                                            percentIdeal)
-    
+    def openFactorPopup(self, mifflinValue):
+        if len(mifflinValue.split('\n')) > 1:
+            mifflinValue = mifflinValue.split('\n')[2].partition(' ')[0]
+            p = FactorPopup(mifflinValue)
+            p.open()
 
     
 class NutritionApp(App):
