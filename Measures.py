@@ -81,6 +81,3 @@ class Gender():
         else:
             return "Female"
         
-    def ReverseGender(self):
-        self.isMale = not self.isMale
-        
