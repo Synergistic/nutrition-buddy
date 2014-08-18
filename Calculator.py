@@ -19,6 +19,9 @@ class NutritionCalculator():
                               (Decimal('4.92') * age) - Decimal('161.0'))
         return caloriesNeeded
     
+    def MifflinFactor(self, mifflinValue, factorToMultiply):
+        return Decimal(str(mifflinValue)) * Decimal(factorToMultiply)
+    
     def CaloriesPerKilogram(self, calories, weight):
         caloriesPerKilogram = calories / weight
         return caloriesPerKilogram  
