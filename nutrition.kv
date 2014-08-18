@@ -184,8 +184,31 @@
         anchor_x: 'center'
         anchor_y: 'bottom'
         BoxLayout:
-            size_hint: (0.75, 0.065)
+            size_hint: (1, 0.065)
             Button:
-                text: 'Main Menu'
-                on_press: root.manager.current = 'welcome'
-            
+                text: 'Add Factor(s)'
+                on_press: root.openFactorPopup(outputLabel.text)
+            Button:
+                text:  'Quit'
+                
+<FactorPopup>
+    title: 'Activity/Stress Factor'
+    size_hint: (0.95, 0.75)
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            Label:
+                text: 'Basic Needs: ' + root.mifflinValue
+            Label:
+                id: updatedNeedsText
+                text: 'Needs with Factors:' + root.updatedMifflin
+        Spinner:
+            id: activityFactor
+            text: '1.00 - No Activity'
+            values: root.activityValues
+            on_text: updatedNeedsText.text = root.updateFactors(self.text[:3], stressFactor.text[:3])
+        Spinner:
+            id: stressFactor
+            text: '1.00 - No Stress'
+            values: root.stressValues
+            on_text: updatedNeedsText.text = root.updateFactors(activityFactor.text[:3], self.text[:3])
