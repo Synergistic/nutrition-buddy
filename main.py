@@ -11,17 +11,17 @@ class FactorPopup(Popup):
     mifflinValue = StringProperty('')
     updatedMifflin = StringProperty('')
     activityValues = ['1.0 - No Activity',
-              '1.20 - Bed Rest',
-              '1.30 - Ambulatory']
+                      '1.20 - Bed Rest',
+                      '1.30 - Ambulatory']
     stressValues = ['0.70 - Starvation',
-              '1.00 - No Stress',
-              '1.13 - 1C Fever',
-              '1.20 - Surgery',
-              '1.20 - Bed Rest',
-              '1.35 - Trauma',
-              '1.50 - Burn < 40% TBSA',
-              '1.60 - Head Injury/Sepsis',
-              '2.10 - Burn > 40% TBSA']    
+                    '1.00 - No Stress',
+                    '1.13 - 1C Fever',
+                    '1.20 - Surgery',
+                    '1.20 - Bed Rest',
+                    '1.35 - Trauma',
+                    '1.50 - Burn < 40% TBSA',
+                    '1.60 - Head Injury/Sepsis',
+                    '2.10 - Burn > 40% TBSA']    
     def __init__(self, mifflinValue):
         super(FactorPopup, self).__init__()
         self.mifflinValue = mifflinValue
@@ -31,26 +31,26 @@ class FactorPopup(Popup):
         tempMifflin = NutritionCalculator().MifflinFactor(self.mifflinValue, activityFactor)
         tempMifflin = NutritionCalculator().MifflinFactor(tempMifflin, stressFactor)
         return 'Needs + Factor(s): ' + str(tempMifflin)
-        
+
 class WelcomeScreen(Screen):
     pass
 
 class ConversionScreen(Screen):
-    
+
     weightIsMetric = False
     heightIsMetric = False
-    
+
     def ConvertMeasure(self, typeOfMeasure, measureToConvert):
-    	decimalCheck = re.compile('\d+(\.\d+)?')
+        decimalCheck = re.compile('\d+(\.\d+)?')
         if decimalCheck.match(measureToConvert) != None:
-            
+
             if typeOfMeasure == 'weight':
                 measure = Weight(measureToConvert, self.weightIsMetric)
                 isMetric = self.weightIsMetric
             else:
                 measure = Height(measureToConvert, self.heightIsMetric)
                 isMetric = self.heightIsMetric
-                
+
             if isMetric:
                 return '{0:.2f}'.format(measure.ConvertToImperial())
             else:
@@ -58,51 +58,51 @@ class ConversionScreen(Screen):
         return ''            
 
     def SetButtonText(self, buttonToChange):
-        if buttonToChange.text[0] == 'K' or buttonToChange.text[0] == 'P':
+        if buttonToChange.text[0] == 'k' or buttonToChange.text[0] == 'l':
             self.weightIsMetric = not self.weightIsMetric
-            
+
             if self.weightIsMetric:
-                buttonToChange.text = 'Kilograms \n    >>\nPounds'
+                buttonToChange.text = 'kg > lbs'
             else:
-                buttonToChange.text = 'Pounds \n   >>\nKilograms'
-            
-        if buttonToChange.text[0] == 'C' or buttonToChange.text[0] == 'I':
+                buttonToChange.text = 'lbs > kg'
+
+        if buttonToChange.text[0] == 'c' or buttonToChange.text[0] == 'i':
             self.heightIsMetric = not self.heightIsMetric
-            
+
             if self.heightIsMetric:
-                buttonToChange.text = 'Centimeters \n    >>\nInches'
+                buttonToChange.text = 'cm > in'
             else:
-                buttonToChange.text = 'Inches \n   >>\nCentimeters'   
+                buttonToChange.text = 'in > cm'   
 
 
 class MifflinStJeorScreen(Screen):
-    
+
     def Calculations(self, measures):
-    
-    	decimalCheck = re.compile('\d+(\.\d+)?')
-    	if decimalCheck.match(measures['wtValue']) == None or \
-    	    decimalCheck.match(measures['htValue']) == None or \
-    	    decimalCheck.match(measures['age']) == None:
+
+        decimalCheck = re.compile('\d+(\.\d+)?')
+        if decimalCheck.match(measures['wtValue']) == None or \
+           decimalCheck.match(measures['htValue']) == None or \
+           decimalCheck.match(measures['age']) == None:
             return "Unable to process, check entered values."
-            
+
         if measures['wtUnit'] == 'kg':
             weight = Weight(measures['wtValue'], True)
         else:
             weight = Weight(measures['wtValue'], False)
-        
+
         if measures['htUnit'] == 'cm':
             height = Height(measures['htValue'], True)
         else:
             height = Height(measures['htValue'], False)     
-        
+
         if measures['gender'] == 'down':
-             gender = Gender(True)
+            gender = Gender(True)
         else:
-             gender = Gender(False)
+            gender = Gender(False)
         age = Age(measures['age'])
-        
+
         print str(weight), str(height), str(gender), str(age)
-       
+
         return "\n".join([self.CalculateEnergyNeeds(weight.ConvertToMetric(), 
                                                     height.ConvertToMetric(), 
                                                     age.value, gender),
@@ -111,44 +111,43 @@ class MifflinStJeorScreen(Screen):
                           self.CalculateIdealWeight(weight, 
                                                     height.ConvertToImperial(), 
                                                     gender)])
-    
+
     def CalculateBMI(self, weight, height):
         bmi = NutritionCalculator().BodyMassIndex(weight, height)
         bmiCategory = NutritionCalculator().BmiCategory(bmi)
         return "{0:.2f} - {1}".format(bmi, bmiCategory)
-    
+
     def CalculateEnergyNeeds(self, weight, height, age, gender):  
         energyNeeds = NutritionCalculator().MifflinStJeor(weight, height, 
                                                           age, gender)
         caloriesPerKilogram = NutritionCalculator().CaloriesPerKilogram(energyNeeds, 
                                                                         weight)
-        return "\n\n{0:.0f} Calories ({1:.0f}cal/kg)".format(energyNeeds, 
-                                                           caloriesPerKilogram)
-    
+        return "{0:.0f} Calories ({1:.0f}cal/kg)".format(energyNeeds, 
+                                                             caloriesPerKilogram)
+
     def CalculateIdealWeight(self, weight, height, gender):
         idealWeight = Weight(NutritionCalculator().IdealBodyWeight(height, gender), False)
         percentIdeal = NutritionCalculator().PercentIdealBodyWeight(weight.ConvertToMetric(), 
                                                                     idealWeight.ConvertToMetric())
         if percentIdeal > 125.0:
             adjustedWeight = Weight(NutritionCalculator().AdjustedBodyWeight(weight.ConvertToMetric(), 
-                                                                             idealWeight.ConvertToMetric()), 
-                                                                             True)
+                                                                             idealWeight.ConvertToMetric()), True)
             return "{0:.2f}kg or {1:.2f}lbs ({2:.2f}%)\n{3:.2f}kg or {4:.2f}lbs".format(idealWeight.ConvertToMetric(), 
                                                                                         idealWeight.ConvertToImperial(), 
                                                                                         percentIdeal,
                                                                                         adjustedWeight.ConvertToMetric(), 
                                                                                         adjustedWeight.ConvertToImperial())
-        
+
         return "{0:.2f}kg or {1:.2f}lbs ({2:.2f}%)\nN/A".format(idealWeight.ConvertToMetric(), 
-                                                           idealWeight.ConvertToImperial(),
-                                                           percentIdeal)
+                                                                idealWeight.ConvertToImperial(),
+                                                                percentIdeal)
     def openFactorPopup(self, mifflinValue):
         if len(mifflinValue.split('\n')) > 1:
             mifflinValue = mifflinValue.split('\n')[2].partition(' ')[0]
             p = FactorPopup(mifflinValue)
             p.open()
 
-    
+
 class NutritionApp(App):
     title = "Nutrition Buddy"
 
