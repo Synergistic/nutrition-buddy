@@ -33,7 +33,7 @@
         anchor_x: 'center'
         anchor_y: 'top'
         BoxLayout:
-            size_hint: (0.75, 0.5)
+            size_hint: (0.75, 0.35)
             orientation: 'vertical'
 
             Label:
@@ -85,139 +85,141 @@
                     disabled: True
                     size_hint_y: None
                     height: inputHeight.height
-        
-    AnchorLayout:
-        anchor_x: 'center'
-        anchor_y: 'bottom'
-        Button:
-            size_hint: (0.75, 0.1)
-            text: 'Return to Menu'
-            on_press: root.manager.current = 'welcome'
+    
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'bottom'
+            Button:
+                size_hint: (0.75, 0.1)
+                text: 'Return to Menu'
+                on_press: root.manager.current = 'welcome'
 
 <MifflinStJeorScreen>
     AnchorLayout:
         anchor_x: 'center'
         anchor_y: 'top'
-    
-        BoxLayout:
-            orientation: 'vertical'
-            Label:
-                text: 'Mifflin-St.Jeor'
-                font_size: '32dp'
-                size_hint_y: 0.2
-            GridLayout:
-                cols: 3
-                rows: 7
-                id: dataGrid
-                Label:
-                    text: 'Weight'
-                    font_size: '24dp'
-                    size_hint_y: None
-                    height: weightInput.height
-                TextInput:
-                    id: weightInput
-                    multiline: False
-                    font_size: '18dp'
-                    text: ' '
-                    input_type: 'number'
-                    size_hint_y: None
-                    height: self.minimum_height
-                Spinner:
-                    id: weightUnit
-                    font_size: '18dp'
-                    text: 'kg'
-                    height: weightInput.height
-                    values: ('kg', 'lbs')
-                    size_hint_y: None
-                    
-                    
-                Label:
-                    size_hint_y: None
-                    height: heightInput.height
-                    text: 'Height'
-                    font_size: '24dp'
-                TextInput:
-                    id: heightInput
-                    multiline: False
-                    font_size: '18dp'
-                    text: ' '
-                    input_type: 'number'
-                    size_hint_y: None
-                    height: self.minimum_height   
-                Spinner:
-                    id: heightUnit
-                    text: 'cm'
-                    font_size: '18dp'
-                    height: heightInput.height
-                    values: ('cm', 'in')
-                    size_hint_y: None                    
-                    
-                Label:
-                    size_hint_y: None
-                    height: ageInput.height
-                    text: 'Age'
-                    font_size: '24dp'   
-                TextInput:
-                    id: ageInput
-                    multiline: False
-                    font_size: '18dp'
-                    text: ' '
-                    input_type: 'number'
-                    size_hint_y: None
-                    height: self.minimum_height  
-                Label:
-                    size_hint_y: None
-                    height: ageInput.height
-                    
-                Label:
-                    size_hint_y: None
-                    height: heightInput.height
-                    text: 'Sex'
-                    font_size: '24dp'
-                ToggleButton:
-                    size_hint_y: None
-                    height: heightInput.height
-                    font_size: '18dp'
-                    id: gender
-                    text: 'Male'
-                    group: 'gender'
-                    state: 'down'
-                ToggleButton:
-                    size_hint_y: None
-                    height: heightInput.height
-                    font_size: '18dp'
-                    text: 'Female'
-                    group: 'gender'
-                  
-                Button:
-                    text: 'Calculate'
-                	size_hint_y: None
-                	height: height.Input.height * 2
-                    on_press: outputLabel.text = root.Calculations({'wtValue': weightInput.text.strip(), 'wtUnit': weightUnit.text, 'htValue': heightInput.text.strip(), 'htUnit': heightUnit.text, 'age': ageInput.text.strip(), 'gender': gender.state})
-                Button:
-                    text: 'Clear Fields'
-                	size_hint_y: None
-                	height: height.Input.height * 2
-                    on_release: weightInput.text, heightInput.text, ageInput.text = '', '', ''
-                Button:
-                    text: 'Add Factor(s)'
-                	size_hint_y: None
-                	height: height.Input.height * 2
-                    on_press: root.openFactorPopup(outputLabel.text)
-                    
-                Label:
-                Label:
 
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Mifflin-St.Jeor'
+            font_size: '32dp'
+            size_hint_y: 0.2
+        GridLayout:
+            cols: 3
+            rows: 7
+            id: dataGrid
+            Label:
+                text: 'Weight'
+                font_size: '24dp'
+                size_hint_y: None
+                height: weightInput.height
+            TextInput:
+                id: weightInput
+                multiline: False
+                font_size: '18dp'
+                text: ' '
+                input_type: 'number'
+                size_hint_y: None
+                height: self.minimum_height
+            Spinner:
+                id: weightUnit
+                font_size: '18dp'
+                text: 'kg'
+                height: weightInput.height
+                values: ('kg', 'lbs')
+                size_hint_y: None
+
+
+            Label:
+                size_hint_y: None
+                height: heightInput.height
+                text: 'Height'
+                font_size: '24dp'
+            TextInput:
+                id: heightInput
+                multiline: False
+                font_size: '18dp'
+                text: ' '
+                input_type: 'number'
+                size_hint_y: None
+                height: self.minimum_height   
+            Spinner:
+                id: heightUnit
+                text: 'cm'
+                font_size: '18dp'
+                height: heightInput.height
+                values: ('cm', 'in')
+                size_hint_y: None                    
+        
+            Label:
+                size_hint_y: None
+                height: ageInput.height
+                text: 'Age'
+                font_size: '24dp'   
+            TextInput:
+                id: ageInput
+                multiline: False
+                font_size: '18dp'
+                text: ' '
+                input_type: 'number'
+                size_hint_y: None
+                height: self.minimum_height  
+            Label:
+                size_hint_y: None
+                height: ageInput.height
+        
+            Label:
+                size_hint_y: None
+                height: heightInput.height
+                text: 'Sex'
+                font_size: '24dp'
+            ToggleButton:
+                size_hint_y: None
+                height: heightInput.height
+                font_size: '18dp'
+                id: gender
+                text: 'Male'
+                group: 'gender'
+                state: 'down'
+            ToggleButton:
+                size_hint_y: None
+                height: heightInput.height
+                font_size: '18dp'
+                text: 'Female'
+                group: 'gender'
+        
+            Button:
+                text: 'Calculate'
+                size_hint_y: None
+                height: heightInput.height
+                on_press: outputLabel.text = root.Calculations({'wtValue': weightInput.text.strip(), 'wtUnit': weightUnit.text, 'htValue': heightInput.text.strip(), 'htUnit': heightUnit.text, 'age': ageInput.text.strip(), 'gender': gender.state})
+            Button:
+                text: 'Clear Fields'
+                size_hint_y: None
+                height: heightInput.height
+                on_release: weightInput.text, heightInput.text, ageInput.text = '', '', ''
+            Button:
+                text: 'Add Factor(s)'
+                size_hint_y: None
+                height: heightInput.height 
+                on_press: root.openFactorPopup(outputLabel.text)
+        
+            Label:
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'top'
+                Label:
                     text: ' '
                     font_size: '20dp'
+                    size_hint_y: 0.5
                     id: outputLabel
-				Label:
-                
-                Button:
-                	size_hint_y: None
-                	height: height.Input.height * 2
-                    text:  'Back to Menu'
-                    on_press: root.manager.current = 'welcome'
+
+    Button:
+        size_hint_y: None
+        height: heightInput.height * 2
+        text:  'Back to Menu'
+        on_press: root.manager.current = 'welcome'
 
 <FactorPopup>
     id: window
