@@ -113,7 +113,7 @@ class MifflinStJeorScreen(Screen):
     def CalculateBMI(self, weight, height):
         bmi = NutritionCalculator().BodyMassIndex(weight, height)
         bmiCategory = NutritionCalculator().BmiCategory(bmi)
-        return "{0:.2f} - {1}".format(bmi, bmiCategory)
+        return "BMI: {0:.2f} - {1}".format(bmi, bmiCategory)
 
     def CalculateEnergyNeeds(self, weight, height, age, gender):  
         energyNeeds = NutritionCalculator().MifflinStJeor(weight, height, 
@@ -130,13 +130,13 @@ class MifflinStJeorScreen(Screen):
         if percentIdeal > 125.0:
             adjustedWeight = Weight(NutritionCalculator().AdjustedBodyWeight(weight.ConvertToMetric(), 
                                                                              idealWeight.ConvertToMetric()), True)
-            return "{0:.2f}kg or {1:.2f}lbs ({2:.2f}%)\n{3:.2f}kg or {4:.2f}lbs".format(idealWeight.ConvertToMetric(), 
+            return "IBW: {0:.2f}kg or {1:.2f}lbs ({2:.2f}%)\nABW: {3:.2f}kg or {4:.2f}lbs".format(idealWeight.ConvertToMetric(), 
                                                                                         idealWeight.ConvertToImperial(), 
                                                                                         percentIdeal,
                                                                                         adjustedWeight.ConvertToMetric(), 
                                                                                         adjustedWeight.ConvertToImperial())
 
-        return "{0:.2f}kg or {1:.2f}lbs ({2:.2f}%)\nN/A".format(idealWeight.ConvertToMetric(), 
+        return "IBW: {0:.2f}kg or {1:.2f}lbs ({2:.2f}%)\nABW: N/A".format(idealWeight.ConvertToMetric(), 
                                                                 idealWeight.ConvertToImperial(),
                                                                 percentIdeal)
     def openFactorPopup(self, mifflinValue):
