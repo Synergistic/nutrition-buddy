@@ -101,8 +101,6 @@ class MifflinStJeorScreen(Screen):
             gender = Gender(False)
         age = Age(measures['age'])
 
-        print str(weight), str(height), str(gender), str(age)
-
         return "\n".join([self.CalculateEnergyNeeds(weight.ConvertToMetric(), 
                                                     height.ConvertToMetric(), 
                                                     age.value, gender),
@@ -143,7 +141,7 @@ class MifflinStJeorScreen(Screen):
                                                                 percentIdeal)
     def openFactorPopup(self, mifflinValue):
         if len(mifflinValue.split('\n')) > 1:
-            mifflinValue = mifflinValue.split('\n')[2].partition(' ')[0]
+            mifflinValue = mifflinValue.partition(' ')[0]
             p = FactorPopup(mifflinValue)
             p.open()
 
