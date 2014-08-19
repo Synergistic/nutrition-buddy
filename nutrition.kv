@@ -10,7 +10,7 @@
             Label:
                 size_hint_y: 0.15
                 text: 'Nutrition Buddy'
-                font_size: '32dp'
+                font_size: '24dp'
             Label:
                 size_hint_y: 0.15
                 text: 'Select a calculator to get started.'
@@ -31,18 +31,18 @@
     name: 'conversion'
     AnchorLayout:
         anchor_x: 'center'
-        anchor_y: 'center'
+        anchor_y: 'top'
         BoxLayout:
-            size_hint: (0.75, 0.75)
+            size_hint: (0.75, 0.5)
             orientation: 'vertical'
 
             Label:
                 text: "Converter"
-                font_size: '32dp'
+                font_size: '24dp'
         
             BoxLayout:
                 TextInput:
-                    font_size: '24dp'
+                    font_size: '18dp'
                     text: ' '
                     input_type: 'number'
                     size_hint_y: None
@@ -57,7 +57,7 @@
                     size_hint_y: None
                     height: inputWeight.height
                 TextInput:
-                    font_size: '24dp'
+                    font_size: '18dp'
                     id: convertedWeight
                     disabled: True
                     size_hint_y: None
@@ -65,7 +65,7 @@
         
             BoxLayout:
                 TextInput:
-                    font_size: '24dp'
+                    font_size: '18dp'
                     text: ' '
                     input_type: 'number'
                     size_hint_y: None
@@ -80,12 +80,11 @@
                     size_hint_y: None
                     height: inputHeight.height
                 TextInput:
-                    font_size: '24dp'
+                    font_size: '18dp'
                     id: convertedHeight
                     disabled: True
                     size_hint_y: None
                     height: inputHeight.height
-            Label:
         
     AnchorLayout:
         anchor_x: 'center'
@@ -112,19 +111,20 @@
                 id: dataGrid
                 Label:
                     text: 'Weight'
-                    font_size: '32dp'
+                    font_size: '24dp'
                     size_hint_y: None
                     height: weightInput.height
                 TextInput:
                     id: weightInput
-                    font_size: '24dp'
+                    multiline: False
+                    font_size: '18dp'
                     text: ' '
                     input_type: 'number'
                     size_hint_y: None
                     height: self.minimum_height
                 Spinner:
                     id: weightUnit
-                    font_size: '24dp'
+                    font_size: '18dp'
                     text: 'kg'
                     height: weightInput.height
                     values: ('kg', 'lbs')
@@ -135,10 +135,11 @@
                     size_hint_y: None
                     height: heightInput.height
                     text: 'Height'
-                    font_size: '32dp'
+                    font_size: '24dp'
                 TextInput:
                     id: heightInput
-                    font_size: '24dp'
+                    multiline: False
+                    font_size: '18dp'
                     text: ' '
                     input_type: 'number'
                     size_hint_y: None
@@ -146,7 +147,7 @@
                 Spinner:
                     id: heightUnit
                     text: 'cm'
-                    font_size: '24dp'
+                    font_size: '18dp'
                     height: heightInput.height
                     values: ('cm', 'in')
                     size_hint_y: None                    
@@ -155,10 +156,11 @@
                     size_hint_y: None
                     height: ageInput.height
                     text: 'Age'
-                    font_size: '32dp'   
+                    font_size: '24dp'   
                 TextInput:
                     id: ageInput
-                    font_size: '24dp'
+                    multiline: False
+                    font_size: '18dp'
                     text: ' '
                     input_type: 'number'
                     size_hint_y: None
@@ -171,11 +173,11 @@
                     size_hint_y: None
                     height: heightInput.height
                     text: 'Sex'
-                    font_size: '32dp'
+                    font_size: '24dp'
                 ToggleButton:
                     size_hint_y: None
                     height: heightInput.height
-                    font_size: '24dp'
+                    font_size: '18dp'
                     id: gender
                     text: 'Male'
                     group: 'gender'
@@ -183,36 +185,37 @@
                 ToggleButton:
                     size_hint_y: None
                     height: heightInput.height
-                    font_size: '24dp'
+                    font_size: '18dp'
                     text: 'Female'
                     group: 'gender'
                   
                 Button:
                     text: 'Calculate'
+                	size_hint_y: None
+                	height: height.Input.height * 2
                     on_press: outputLabel.text = root.Calculations({'wtValue': weightInput.text.strip(), 'wtUnit': weightUnit.text, 'htValue': heightInput.text.strip(), 'htUnit': heightUnit.text, 'age': ageInput.text.strip(), 'gender': gender.state})
                 Button:
                     text: 'Clear Fields'
+                	size_hint_y: None
+                	height: height.Input.height * 2
                     on_release: weightInput.text, heightInput.text, ageInput.text = '', '', ''
                 Button:
                     text: 'Add Factor(s)'
+                	size_hint_y: None
+                	height: height.Input.height * 2
                     on_press: root.openFactorPopup(outputLabel.text)
+                    
                 Label:
-                    size_hint_y: None
-                    height: heightInput.height * 3
-                    text: 'Energy:\nBMI:\nIBW:\nABW:'
-                    font_size: '24dp'
                 Label:
-                    size_hint_y: None
-                    height: heightInput.height * 3
-                    text: ' '
-                    font_size: '24dp'
-                    id: outputLabel
-                Label:
-                    size_hint_y: None
-                    height: heightInput.height * 3
-                
 
+                    text: ' '
+                    font_size: '20dp'
+                    id: outputLabel
+				Label:
+                
                 Button:
+                	size_hint_y: None
+                	height: height.Input.height * 2
                     text:  'Back to Menu'
                     on_press: root.manager.current = 'welcome'
 
