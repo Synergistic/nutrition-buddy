@@ -4,7 +4,7 @@
 title = Nutrition Buddy
 
 # (str) Package name
-package.name = NutritionBuddy
+package.name = nutritionbuddy
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.synergistik
@@ -35,10 +35,10 @@ version = 1.0.0
 requirements = kivy
 
 # (str) Presplash of the application
-presplash.filename = logo.png
+presplash.filename = %(source.dir)s/logo.png
 
 # (str) Icon of the application
-#icon.filename = icon.png
+icon.filename = %(source.dir)s/icon.png
 
 # (str) Supported orientation (one of landscape, portrait or all)
 orientation = portrait
