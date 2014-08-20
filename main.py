@@ -144,6 +144,10 @@ class MifflinStJeorScreen(Screen):
             mifflinValue = mifflinValue.partition(' ')[0]
             p = FactorPopup(mifflinValue)
             p.open()
+    
+    def closeKeyboard(self, *args):
+        for textInput in args:
+            textInput.focus = False
 
 
 class NutritionApp(App):

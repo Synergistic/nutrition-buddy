@@ -8,15 +8,16 @@
             orientation: 'vertical'
             size_hint: (0.85, 1)
             Label:
-                size_hint_y: 0.15
+                size_hint_y: 0.1
                 text: 'Nutrition Buddy'
-                font_size: '24dp'
+                font_size: '36dp'
             Label:
-                size_hint_y: 0.15
+                size_hint_y: 0.08
                 text: 'Select a calculator to get started.'
                 font_size: '16dp'
+
             BoxLayout:
-                size_hint_y: 0.25
+                size_hint_y: 0.20
                 Button:
                     text: "Converter"
                     on_press: root.manager.current = 'conversion'
@@ -42,7 +43,7 @@
         
             BoxLayout:
                 TextInput:
-                    font_size: '18dp'
+                    font_size: '26dp'
                     text: ' '
                     input_type: 'number'
                     size_hint_y: None
@@ -57,7 +58,7 @@
                     size_hint_y: None
                     height: inputWeight.height
                 TextInput:
-                    font_size: '18dp'
+                    font_size: '26dp'
                     id: convertedWeight
                     disabled: True
                     size_hint_y: None
@@ -65,7 +66,7 @@
         
             BoxLayout:
                 TextInput:
-                    font_size: '18dp'
+                    font_size: '26dp'
                     text: ' '
                     input_type: 'number'
                     size_hint_y: None
@@ -80,7 +81,7 @@
                     size_hint_y: None
                     height: inputHeight.height
                 TextInput:
-                    font_size: '18dp'
+                    font_size: '26dp'
                     id: convertedHeight
                     disabled: True
                     size_hint_y: None
@@ -117,14 +118,14 @@
             TextInput:
                 id: weightInput
                 multiline: False
-                font_size: '18dp'
+                font_size: '24dp'
                 text: ' '
                 input_type: 'number'
                 size_hint_y: None
                 height: self.minimum_height
             Spinner:
                 id: weightUnit
-                font_size: '18dp'
+                font_size: '24dp'
                 text: 'kg'
                 height: weightInput.height
                 values: ('kg', 'lbs')
@@ -139,7 +140,7 @@
             TextInput:
                 id: heightInput
                 multiline: False
-                font_size: '18dp'
+                font_size: '24dp'
                 text: ' '
                 input_type: 'number'
                 size_hint_y: None
@@ -147,7 +148,7 @@
             Spinner:
                 id: heightUnit
                 text: 'cm'
-                font_size: '18dp'
+                font_size: '24dp'
                 height: heightInput.height
                 values: ('cm', 'in')
                 size_hint_y: None                    
@@ -160,7 +161,7 @@
             TextInput:
                 id: ageInput
                 multiline: False
-                font_size: '18dp'
+                font_size: '24dp'
                 text: ' '
                 input_type: 'number'
                 size_hint_y: None
@@ -177,7 +178,7 @@
             ToggleButton:
                 size_hint_y: None
                 height: heightInput.height
-                font_size: '18dp'
+                font_size: '24dp'
                 id: gender
                 text: 'Male'
                 group: 'gender'
@@ -185,25 +186,27 @@
             ToggleButton:
                 size_hint_y: None
                 height: heightInput.height
-                font_size: '18dp'
+                font_size: '24dp'
                 text: 'Female'
                 group: 'gender'
         
             Button:
                 text: 'Calculate'
                 size_hint_y: None
-                height: heightInput.height
-                on_press: outputLabel.text = root.Calculations({'wtValue': weightInput.text.strip(), 'wtUnit': weightUnit.text, 'htValue': heightInput.text.strip(), 'htUnit': heightUnit.text, 'age': ageInput.text.strip(), 'gender': gender.state})
+                height: heightInput.height * 2.5
+                on_release: outputLabel.text = root.Calculations({'wtValue': weightInput.text.strip(), 'wtUnit': weightUnit.text, 'htValue': heightInput.text.strip(), 'htUnit': heightUnit.text, 'age': ageInput.text.strip(), 'gender': gender.state})
+                on_press: root.closeKeyboard(heightInput, weightInput, ageInput)
             Button:
                 text: 'Clear Fields'
                 size_hint_y: None
-                height: heightInput.height
+                height: heightInput.height * 2.5
                 on_release: weightInput.text, heightInput.text, ageInput.text = '', '', ''
             Button:
                 text: 'Add Factor(s)'
                 size_hint_y: None
-                height: heightInput.height 
-                on_press: root.openFactorPopup(outputLabel.text)
+                height: heightInput.height * 2.5
+                on_release: root.openFactorPopup(outputLabel.text)
+                on_press: root.closeKeyboard(heightInput, weightInput, ageInput)
         
             Label:
             AnchorLayout:
