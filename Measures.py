@@ -80,4 +80,32 @@ class Gender():
             return "Male"
         else:
             return "Female"
+
+
+class Temperature(Measure):
+    
+    def __init__(self, value, isMetric):
+        Measure.__init__(self, value)
+        self.isMetric = isMetric
+        
+    def __str__(self):
+        
+        if self.isMetric:
+            unit = "C"
+        else:
+            unit = "F"
+            
+        return "{0:.2f}{1}".format(self.value, unit)
+        
+    def ConvertToMetric(self):
+        if not self.isMetric:
+            self.value = (self.value - Decimal('32')) * (Decimal('5.0')/Decimal('9.0'))
+            self.isMetric = True
+        return self.value
+            
+    def ConvertToImperial(self):
+        if self.isMetric:
+            self.value = (self.value * (Decimal('9.0')/Decimal('5.0'))) + Decimal('32')
+            self.isMetric = False
+        return self.value
         
