@@ -21,26 +21,26 @@ class NutritionCalculator():
 
     def MifflinFactor(self, mifflinValue, factorToMultiply):
         return Decimal(str(mifflinValue)) * Decimal(factorToMultiply)
-        
-        
+
+
     def PennState2003B(self, mifflin, ventilation, maxTemp):
-        return mifflin * Decimal('0.96') + ventilation * Decimal('31') + 
-                maxTemp * Decimal('167') - Decimal('6212')
-      
+        return (mifflin * Decimal('0.96') + ventilation * Decimal('31') + 
+                maxTemp * Decimal('167') - Decimal('6212'))
+
     def PennState2010(self, mifflin, ventilation, maxTemp):
-        return mifflin * Decimal('0.71') + ventilation * Decimal('64') + 
-                maxTemp * Decimal('85') - Decimal('3085')
-    
+        return (mifflin * Decimal('0.71') + ventilation * Decimal('64') + 
+    maxTemp * Decimal('85') - Decimal('3085'))
+
     def PennState(self, weight, height, age, gender, ventilation, maxTemp):
         mifflin = self.MifflinStJeor(weight, height, age, gender)
         bmi = self.BodyMassIndex(weight, height)
-        
+
         if  bmi < 30 or (age < 60 and bmi > 30):
             caloriesNeeded = self.PennState2003B(mifflin, ventilation, maxTemp)
-        
+
         elif bmi > 30 and age > 60:
             caloriesNeeded = self.PennState2010(mifflin, ventilation, maxTemp)
-  
+
         return caloriesNeeded
 
     def CaloriesPerKilogram(self, calories, weight):
