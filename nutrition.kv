@@ -34,16 +34,16 @@
         anchor_x: 'center'
         anchor_y: 'top'
         BoxLayout:
-            size_hint: (0.75, 0.35)
+            size_hint: (0.95, 0.35)
             orientation: 'vertical'
 
             Label:
                 text: "Converter"
-                font_size: '24dp'
+                font_size: '32dp'
         
             BoxLayout:
                 TextInput:
-                    font_size: '26dp'
+                    font_size: '28dp'
                     text: ' '
                     input_type: 'number'
                     size_hint_y: None
@@ -58,7 +58,7 @@
                     size_hint_y: None
                     height: inputWeight.height
                 TextInput:
-                    font_size: '26dp'
+                    font_size: '28dp'
                     id: convertedWeight
                     disabled: True
                     size_hint_y: None
@@ -66,7 +66,7 @@
         
             BoxLayout:
                 TextInput:
-                    font_size: '26dp'
+                    font_size: '28dp'
                     text: ' '
                     input_type: 'number'
                     size_hint_y: None
@@ -81,7 +81,7 @@
                     size_hint_y: None
                     height: inputHeight.height
                 TextInput:
-                    font_size: '26dp'
+                    font_size: '28dp'
                     id: convertedHeight
                     disabled: True
                     size_hint_y: None
@@ -193,18 +193,18 @@
             Button:
                 text: 'Calculate'
                 size_hint_y: None
-                height: heightInput.height * 2.5
+                height: heightInput.height * 1.5
                 on_release: outputLabel.text = root.Calculations({'wtValue': weightInput.text.strip(), 'wtUnit': weightUnit.text, 'htValue': heightInput.text.strip(), 'htUnit': heightUnit.text, 'age': ageInput.text.strip(), 'gender': gender.state})
                 on_press: root.closeKeyboard(heightInput, weightInput, ageInput)
             Button:
                 text: 'Clear Fields'
                 size_hint_y: None
-                height: heightInput.height * 2.5
+                height: heightInput.height * 1.5
                 on_release: weightInput.text, heightInput.text, ageInput.text = '', '', ''
             Button:
                 text: 'Add Factor(s)'
                 size_hint_y: None
-                height: heightInput.height * 2.5
+                height: heightInput.height * 1.5
                 on_release: root.openFactorPopup(outputLabel.text)
                 on_press: root.closeKeyboard(heightInput, weightInput, ageInput)
         
@@ -213,14 +213,14 @@
                 anchor_x: 'center'
                 anchor_y: 'top'
                 Label:
-                    text: ' '
-                    font_size: '20dp'
+                    text: 'Your calculations will be here.'
+                    font_size: '18dp'
                     size_hint_y: 0.5
                     id: outputLabel
 
     Button:
         size_hint_y: None
-        height: heightInput.height * 2
+        height: heightInput.height
         text:  'Back to Menu'
         on_press: root.manager.current = 'welcome'
 
@@ -231,6 +231,7 @@
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
+            orientation: 'vertical'
             Label:
                 text: 'Basic Needs: ' + root.mifflinValue
             Label:
