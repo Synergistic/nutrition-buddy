@@ -1,5 +1,5 @@
 <WelcomeScreen>:
-    name: 'welcome'
+    name: 'Welcome'
 
     AnchorLayout:
         anchor_x: 'center'
@@ -19,234 +19,334 @@
             BoxLayout:
                 size_hint_y: 0.20
                 Button:
-                    text: "Converter"
-                    on_press: root.manager.current = 'conversion'
-                Button:
                     text: "Mifflin-St.Jeor"
                     on_press: root.manager.current = 'Mifflin'
+                Button:
+                    text: "Penn State"
+                    on_press: root.manager.current = 'PennState'
+            BoxLayout:
+                size_hint_y: 0.2
+                Button:
+                    text: "Converter"
+                    on_press: root.manager.current = 'Conversion'
             Label:
                 size_hint_y: 0.4
 
-
-<ConversionScreen>:
-    name: 'conversion'
+<ResultsScreen>:
+    name: 'Results'
     AnchorLayout:
         anchor_x: 'center'
         anchor_y: 'top'
         BoxLayout:
-            size_hint: (0.95, 0.35)
+            size_hint: (1, 0.75)
             orientation: 'vertical'
-
             Label:
-                text: "Converter"
-                font_size: '32dp'
-        
-            BoxLayout:
-                TextInput:
-                    font_size: '28dp'
-                    text: ' '
-                    input_type: 'number'
-                    size_hint_y: None
-                    height: self.minimum_height
-                    multiline: False
-                    id: inputWeight
-                    on_text: convertedWeight.text = root.ConvertMeasure('weight', self.text.strip())
-                Button:
-                    text: "lbs > kg"
-                    on_press: root.SetButtonText(self)
-                    on_release: convertedWeight.text = root.ConvertMeasure('weight', inputWeight.text.strip())
-                    size_hint_y: None
-                    height: inputWeight.height
-                TextInput:
-                    font_size: '28dp'
-                    id: convertedWeight
-                    disabled: True
-                    size_hint_y: None
-                    height: inputWeight.height
-        
-            BoxLayout:
-                TextInput:
-                    font_size: '28dp'
-                    text: ' '
-                    input_type: 'number'
-                    size_hint_y: None
-                    height: self.minimum_height
-                    multiline: False
-                    id: inputHeight
-                    on_text: convertedHeight.text = root.ConvertMeasure('height', self.text.strip())
-                Button:
-                    text: "in > cm"
-                    on_press: root.SetButtonText(self)
-                    on_release: convertedHeight.text = root.ConvertMeasure('height', inputHeight.text.strip())
-                    size_hint_y: None
-                    height: inputHeight.height
-                TextInput:
-                    font_size: '28dp'
-                    id: convertedHeight
-                    disabled: True
-                    size_hint_y: None
-                    height: inputHeight.height
-    
-        AnchorLayout:
-            anchor_x: 'center'
-            anchor_y: 'bottom'
-            Button:
-                size_hint: (0.75, 0.1)
-                text: 'Return to Menu'
-                on_press: root.manager.current = 'welcome'
-
-<MifflinStJeorScreen>
-    AnchorLayout:
+                text: 'Your Input'
+                font_size: '24dp'
+            Label:
+                text: root.inputText
+                font_size: '16dp'
+            Label:
+                text: 'Results'
+                font_size: '24dp'
+            Label:
+                text: root.resultsText
+                font_size: '16dp'
+    AnchorLayout:    
         anchor_x: 'center'
-        anchor_y: 'top'
-
+        anchor_y: 'bottom'   
+        Button:
+            size_hint_y: 0.1
+            text: 'Return To Calculator'
+            on_press: root.manager.current = root.currentCalculator
+  
+<ConvertTextBox@TextInput>:
+    font_size: '28dp'
+    text: ' '
+    input_type: 'number'
+    size_hint_y: None
+    height: self.minimum_height
+    multiline: False
+    
+<ConversionScreen>:
+    name: 'Conversion'
     BoxLayout:
         orientation: 'vertical'
         Label:
-            text: 'Mifflin-St.Jeor'
+            text: "Converter"
             font_size: '32dp'
             size_hint_y: 0.2
         GridLayout:
+            rows: 3
             cols: 3
-            rows: 7
-            id: dataGrid
-            Label:
-                text: 'Weight'
-                font_size: '24dp'
-                size_hint_y: None
-                height: weightInput.height
-            TextInput:
-                id: weightInput
-                multiline: False
-                font_size: '24dp'
-                text: ' '
-                input_type: 'number'
-                size_hint_y: None
-                height: self.minimum_height
-            Spinner:
-                id: weightUnit
-                font_size: '24dp'
-                text: 'kg'
-                height: weightInput.height
-                values: ('kg', 'lbs')
-                size_hint_y: None
-
-
-            Label:
-                size_hint_y: None
-                height: heightInput.height
-                text: 'Height'
-                font_size: '24dp'
-            TextInput:
-                id: heightInput
-                multiline: False
-                font_size: '24dp'
-                text: ' '
-                input_type: 'number'
-                size_hint_y: None
-                height: self.minimum_height   
-            Spinner:
-                id: heightUnit
-                text: 'cm'
-                font_size: '24dp'
-                height: heightInput.height
-                values: ('cm', 'in')
-                size_hint_y: None                    
-        
-            Label:
-                size_hint_y: None
-                height: ageInput.height
-                text: 'Age'
-                font_size: '24dp'   
-            TextInput:
-                id: ageInput
-                multiline: False
-                font_size: '24dp'
-                text: ' '
-                input_type: 'number'
-                size_hint_y: None
-                height: self.minimum_height  
-            Label:
-                size_hint_y: None
-                height: ageInput.height
-        
-            Label:
-                size_hint_y: None
-                height: heightInput.height
-                text: 'Sex'
-                font_size: '24dp'
-            ToggleButton:
-                size_hint_y: None
-                height: heightInput.height
-                font_size: '24dp'
-                id: gender
-                text: 'Male'
-                group: 'gender'
-                state: 'down'
-            ToggleButton:
-                size_hint_y: None
-                height: heightInput.height
-                font_size: '24dp'
-                text: 'Female'
-                group: 'gender'
-        
+            spacing: (0, inputWeight.height / 2)
+            ConvertTextBox:
+                id: inputWeight
+                on_text: convertedWeight.text = root.ConvertMeasure('weight', self.text.strip())
             Button:
-                text: 'Calculate'
+                text: "lbs > kg"
+                on_press: root.SetButtonText(self)
+                on_release: convertedWeight.text = root.ConvertMeasure('weight', inputWeight.text.strip())
                 size_hint_y: None
-                height: heightInput.height * 1.5
-                on_release: outputLabel.text = root.Calculations({'wtValue': weightInput.text.strip(), 'wtUnit': weightUnit.text, 'htValue': heightInput.text.strip(), 'htUnit': heightUnit.text, 'age': ageInput.text.strip(), 'gender': gender.state})
-                on_press: root.closeKeyboard(heightInput, weightInput, ageInput)
-            Button:
-                text: 'Clear Fields'
-                size_hint_y: None
-                height: heightInput.height * 1.5
-                on_release: weightInput.text, heightInput.text, ageInput.text = '', '', ''
-            Button:
-                text: 'Add Factor(s)'
-                size_hint_y: None
-                height: heightInput.height * 1.5
-                on_release: root.openFactorPopup(outputLabel.text)
-                on_press: root.closeKeyboard(heightInput, weightInput, ageInput)
+                height: inputWeight.height
+            ConvertTextBox:
+                id: convertedWeight
+                disabled: True
         
-            Label:
-            AnchorLayout:
-                anchor_x: 'center'
-                anchor_y: 'top'
-                Label:
-                    text: 'Your calculations will be here.'
-                    font_size: '18dp'
-                    size_hint_y: 0.5
-                    id: outputLabel
+            ConvertTextBox:
+                id: inputHeight
+                on_text: convertedHeight.text = root.ConvertMeasure('height', self.text.strip())
+            Button:
+                text: "in > cm"
+                on_press: root.SetButtonText(self)
+                on_release: convertedHeight.text = root.ConvertMeasure('height', inputHeight.text.strip())
+                size_hint_y: None  
+                height: inputHeight.height
+            ConvertTextBox:
+                id: convertedHeight
+                disabled: True
+                
+            ConvertTextBox:
+                id: inputVolume
+                on_text: convertedVolume.text = root.ConvertMeasure('volume', self.text.strip())
+            Button:
+                text: "oz > mL"
+                on_press: root.SetButtonText(self)
+                on_release: convertedVolume.text = root.ConvertMeasure('volume', inputVolume.text.strip())
+                size_hint_y: None 
+                height: inputVolume.height
+            ConvertTextBox:
+                id: convertedVolume
+                disabled: True
+    
+    AnchorLayout:
+        anchor_x: 'center'
+        anchor_y: 'bottom'
 
-    Button:
-        size_hint_y: None
-        height: heightInput.height
-        text:  'Back to Menu'
-        on_press: root.manager.current = 'welcome'
+        Button:
+            size_hint_y: 0.1
+            text: 'Return to Menu'
+            on_press: root.manager.current = 'Welcome'
 
-<FactorPopup>
-    id: window
-    title: 'Activity/Stress Factor'
-    size_hint: (0.95, 0.75)
-    BoxLayout:
-        orientation: 'vertical'
+
+<DataLabel@Label>:
+    font_size: '24dp'
+    size_hint_y: None
+
+
+<DataInput@TextInput>:
+    multiline: False
+    font_size: '24dp'
+    text: ' '
+    input_type: 'number'
+    size_hint_y: None
+    height: self.minimum_height
+    
+<DataOption@Spinner>:
+    size_hint_y: None
+    font_size: '24dp' 
+
+<GenderToggle@ToggleButton>:
+    size_hint_y: None
+    group: 'gender'
+    font_size: '24dp'
+
+<MifflinStJeorScreen>
+    AnchorLayout:
+        anchor_y: 'top'
+        
         BoxLayout:
             orientation: 'vertical'
+            size_hint_y: 0.65
             Label:
-                text: 'Basic Needs: ' + root.mifflinValue
+                text: 'Mifflin-St.Jeor'
+                font_size: '32dp'
+            BoxLayout:
+                DataLabel:
+                    text: 'Weight'
+                    height: weightInput.height
+                DataInput:
+                    id: weightInput
+                DataOption:
+                    id: weightUnit
+                    text: 'kg'
+                    height: weightInput.height
+                    values: ('kg', 'lbs')
+            BoxLayout:
+                DataLabel:
+                    height: heightInput.height
+                    text: 'Height'
+                DataInput:
+                    id: heightInput  
+                DataOption:
+                    id: heightUnit
+                    text: 'cm'
+                    height: heightInput.height
+                    values: ('cm', 'in')               
+            BoxLayout:
+                DataLabel:
+                    height: ageInput.height
+                    text: 'Age'   
+                DataInput:
+                    id: ageInput 
+                Label:
+                    size_hint_y: None
+                    height: ageInput.height
+            BoxLayout:
+                DataLabel:
+                    height: heightInput.height
+                    text: 'Sex'
+                GenderToggle:
+                    height: heightInput.height
+                    id: gender
+                    text: 'Male'
+                    state: 'down'
+                GenderToggle:
+                    height: heightInput.height
+                    text: 'Female'
+            BoxLayout:
+                DataLabel:
+                    height: heightInput.height
+                    text: 'Activity'
+                    size_hint_x: 0.33
+                DataOption:
+                    height: heightInput.height
+                    text: '1.00 - No Factor'
+                    values: root.activityValues
+                    id: activityFactor
+            BoxLayout:
+                DataLabel:
+                    size_hint_x: 0.33
+                    height: heightInput.height
+                    text: 'Stress'
+                DataOption:
+                    id: stressFactor
+                    text: '1.00 - No Factor'
+                    values: root.stressValues
+                    height: heightInput.height
+                    
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'bottom'
+            BoxLayout:
+                orientation: 'vertical'
+                BoxLayout:
+                    Button:
+                        text: 'Calculate'
+                        size_hint_y: None
+                        height: heightInput.height * 1.5
+                        on_release: 
+                            root.DisplayResults(root.Calculations({'wtValue': weightInput.text.strip(),
+                            'wtUnit': weightUnit.text, 'htValue': heightInput.text.strip(), 
+                            'htUnit': heightUnit.text, 'age': ageInput.text.strip(), 
+                            'gender': gender.state, 'stress': stressFactor.text[:3],
+                            'activity': activityFactor.text[:3]}), 'Mifflin')
+                    Button:
+                        text: 'Clear Fields'
+                        size_hint_y: None
+                        height: heightInput.height * 1.5
+                        on_release: weightInput.text, heightInput.text, ageInput.text = '', '', ''
+                        on_press: activityFactor.text, stressFactor.text = '1.00 - No Factor', '1.00 - No Factor'
+                Button:
+                    size_hint_y: 0.1
+                    text: 'Return to Menu'
+                    on_press: root.manager.current = 'Welcome'
+
+<PennStateScreen>:
+    name: 'PennState'
+    AnchorLayout:
+        anchor_y: 'top'
+        
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 0.65
             Label:
-                id: updatedNeedsText
-                text: 'Needs with Factors: ' + root.updatedMifflin
-        Spinner:
-            id: activityFactor
-            text: '1.00 - No Activity'
-            values: root.activityValues
-            on_text: updatedNeedsText.text = root.updateFactors(self.text[:3], stressFactor.text[:3])
-        Spinner:
-            id: stressFactor
-            text: '1.00 - No Stress'
-            values: root.stressValues
-            on_text: updatedNeedsText.text = root.updateFactors(activityFactor.text[:3], self.text[:3])
-        Button:
-            text: 'Close'
-            on_release: window.dismiss()
+                text: 'Penn State'
+                font_size: '32dp'
+            BoxLayout:
+                DataLabel:
+                    text: 'Weight'
+                    height: weightInput.height
+                DataInput:
+                    id: weightInput
+                DataOption:
+                    id: weightUnit
+                    text: 'kg'
+                    height: weightInput.height
+                    values: ('kg', 'lbs')
+            BoxLayout:
+                DataLabel:
+                    height: heightInput.height
+                    text: 'Height'
+                DataInput:
+                    id: heightInput  
+                DataOption:
+                    id: heightUnit
+                    text: 'cm'
+                    height: heightInput.height
+                    values: ('cm', 'in')               
+            BoxLayout:
+                DataLabel:
+                    height: ageInput.height
+                    text: 'Age'   
+                DataInput:
+                    id: ageInput 
+                Label:
+                    size_hint_y: None
+                    height: ageInput.height
+            BoxLayout:
+                DataLabel:
+                    height: heightInput.height
+                    text: 'Sex'
+                GenderToggle:
+                    height: heightInput.height
+                    id: gender
+                    text: 'Male'
+                    state: 'down'
+                GenderToggle:
+                    height: heightInput.height
+                    text: 'Female'
+            BoxLayout:
+                DataLabel:
+                    text: 'Max Temp'
+                    height: weightInput.height
+                DataInput:
+                    id: tempInput
+                DataOption:
+                    id: tempUnit
+                    text: 'C'
+                    height: tempInput.height
+                    values: ('C', 'F')
+            BoxLayout:
+                DataLabel:
+                    text: 'Ventilation'
+                    height: weightInput.height
+                DataInput:
+                    id: ventilationInput
+                Label:
+                    
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'bottom'
+            BoxLayout:
+                orientation: 'vertical'
+                BoxLayout:
+                    Button:
+                        text: 'Calculate'
+                        size_hint_y: None
+                        height: heightInput.height * 1.5
+                        on_release: 
+                            root.DisplayResults(root.Calculations({'wtValue': weightInput.text.strip(),
+                            'wtUnit': weightUnit.text, 'htValue': heightInput.text.strip(), 
+                            'htUnit': heightUnit.text, 'age': ageInput.text.strip(), 
+                            'gender': gender.state,  'ventilation': ventilationInput.text.strip(),
+                            'temp': tempInput.text.strip(), 'tempUnit': tempUnit.text}), 'PennState')
+                    Button:
+                        text: 'Clear Fields'
+                        size_hint_y: None
+                        height: heightInput.height * 1.5
+                        on_release: weightInput.text, heightInput.text, ageInput.text, ventilationInput.text, tempInput.text = '', '', '', '', ''
+                Button:
+                    size_hint_y: 0.1
+                    text: 'Return to Menu'
+                    on_press: root.manager.current = 'Welcome'
