@@ -29,18 +29,16 @@ class NutritionCalculator():
 
     def PennState2010(self, mifflin, ventilation, maxTemp):
         return (mifflin * Decimal('0.71') + ventilation * Decimal('64') + 
-    maxTemp * Decimal('85') - Decimal('3085'))
+                maxTemp * Decimal('85') - Decimal('3085'))
 
     def PennState(self, weight, height, age, gender, ventilation, maxTemp):
         mifflin = self.MifflinStJeor(weight, height, age, gender)
         bmi = self.BodyMassIndex(weight, height)
-
         if  bmi < 30 or (age < 60 and bmi > 30):
             caloriesNeeded = self.PennState2003B(mifflin, ventilation, maxTemp)
 
         elif bmi > 30 and age > 60:
             caloriesNeeded = self.PennState2010(mifflin, ventilation, maxTemp)
-
         return caloriesNeeded
 
     def CaloriesPerKilogram(self, calories, weight):
@@ -104,3 +102,13 @@ class NutritionCalculator():
     def AdjustedBodyWeight(self, weight, ibw):
         return (((weight - ibw) *
                  Decimal('0.25')) + ibw)
+
+    def FluidNeeds(self, abw, weight, age):
+        mLperKg = Decimal('30')
+        if age >= 70:
+            mLperKg = Decimal('25.0')
+        if abw:
+            weight = abw
+            print abw * mLperKg
+        return weight * mLperKg
+            
