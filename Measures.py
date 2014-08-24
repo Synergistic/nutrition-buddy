@@ -7,7 +7,40 @@ class Measure:
         
     def __str__(self):
         return str(self.value)
-    
+ 
+class Factor(Measure):
+    def __init__(self, value):
+        Measure.__init__(self, value)
+        
+class Volume(Measure):
+ 
+    def __init__(self, value, isMetric):
+        Measure.__init__(self, value)
+        self.isMetric = isMetric
+        self.FACTOR = Decimal('29.5735296')
+        
+    def __str__(self):
+        valueStr = "{0:.2f}{1}"
+        
+        if self.isMetric:
+            unit = "mL"
+        else:
+            unit = "oz"
+            
+        return valueStr.format(self.value, unit)
+        
+    def ConvertToMetric(self):
+        if not self.isMetric:
+            self.value *= self.FACTOR
+            self.isMetric = True
+        return self.value
+            
+    def ConvertToImperial(self):
+        if self.isMetric:
+            self.value /= self.FACTOR
+            self.isMetric = False
+        return self.value
+     
 class Height(Measure):
     
     def __init__(self, value, isMetric):
@@ -19,9 +52,9 @@ class Height(Measure):
         valueStr = "{0:.2f}{1}"
         
         if self.isMetric:
-            unit = "cm"
+            unit = "mL"
         else:
-            unit = "in"
+            unit = "ozs"
             
         return valueStr.format(self.value, unit)
         
