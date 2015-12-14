@@ -1,3 +1,5 @@
+**This project is no longer being actively developed. For the latest updates and features please use the newest incarnation of this project at http://nutritionbud.com/
+
 Nutrition Buddy 1.0b
 ====================
 
@@ -28,5 +30,4 @@ dependent individuals. This will take into account the mifflin
 equation with some added factors such as max temperature in the
 passed 24 hours (Tmax) and ventilation rate (Ve).
 
-Nutrition Buddy is slated to be released on the Android Play Store
-in early September. Keep an eye out for it!
+Nutrition Buddy is available on the play store: https://play.google.com/store/apps/details?id=org.synergistik.nutritionbuddy&hl=en
